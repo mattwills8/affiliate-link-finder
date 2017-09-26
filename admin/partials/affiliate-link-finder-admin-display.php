@@ -35,7 +35,6 @@ $exo_products = get_posts( $exo_args );
 
 $affilinet = new ExoAffilinet();
 
-/*
 $cj = new ExoCJ();
 
 
@@ -45,9 +44,9 @@ $awin->delete_old_feed();
 
 $awin->get_new_feed();
 
-$awin_csv = $awin->get_csv_object();*/
+$awin_csv = $awin->get_csv_object();
 
-/*
+
 $webgains = new ExoWebgains();
 
 $webgains->delete_old_feed();
@@ -58,7 +57,6 @@ $webgains_csv = $webgains->get_csv_object();
 
 
 $matching_rows = array();
-*/
 
 $style_code = '921948-401';
 $style_code_split = explode("-",$style_code);
@@ -69,7 +67,7 @@ $style_code_2 = $style_code_split[1];
 *
 * WEBGAINS SEARCHES
 *
-
+*/
 //nikeUK
 $match = array();
 $final_match = array();
@@ -164,6 +162,11 @@ if($cj_count == 24){
 }
 */
 
+/*
+*
+* AFFILINET SEARCHES
+*
+*/
 $match = array();
 $final_match = array();
 $sku = '896176-601';
