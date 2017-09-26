@@ -1,0 +1,6 @@
+{
+    "require": {
+        "affilinet/productdata-php-sdk": "^1.0.2",
+        "croscon/commissionjunction-php": "dev-master"
+    }
+}
