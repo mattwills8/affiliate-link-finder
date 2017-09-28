@@ -38,7 +38,7 @@ class ExoAffilinet {
         $final_match = array();
         $sku = $style_code;
         
-        $match = $affilinet->get_products_by_name($name);
+        $match = $this->get_products_by_name($name);
         
         if($match){
 
@@ -57,10 +57,11 @@ class ExoAffilinet {
 
                 }
             }
-
-            echo '<br>Found: '.sizeof($final_match).'<br>';
-            echo 'From: affilinet<br><br>';
         }
+        
+        echo '<br>Found: '.sizeof($final_match).'<br>';
+        echo 'From: Footlocker<br><br>';
+        
         return $final_match;
     }
 
