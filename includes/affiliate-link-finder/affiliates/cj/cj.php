@@ -90,7 +90,7 @@ class ExoCJ {
         return $final_match;
     }
     
-    public function search_sneaker_stuff($style_code, $size='10') {
+    public function search_sneakers_n_stuff($style_code, $size='10') {
         
         $match = array();
         $final_match = array();
@@ -100,17 +100,21 @@ class ExoCJ {
         $match = $this->search_products_by_sku($sku);
         if($match){
             foreach($match as $matched_row) {
-                if($matched_row['advertiser-name'] !== "Sneakerstuff"){
+                if($matched_row['advertiser-name'] !== "Sneakersnstuff"){
                     continue;
                 }
-                echo $matched_row['products']['product']['name'].'<br>';
+                //if(strpos($matched_row['buy-url'],$sku) !== false ){
+                    array_push($final_match, $matched_row);
+                //}
             }
         }
         
-        echo '<br>Found: '.sizeof($match).'<br>';
-        echo 'From: Sneakerstuff<br><br>';
-        
+        echo '<br>Found: '.sizeof($final_match).'<br>';
+        echo 'From: Sneakersnstuff<br><br>';
+        var_dump($match['products']);
         return $match['products'];
+        
+        
     }
     
     public function search_products_by_sku($sku) {
