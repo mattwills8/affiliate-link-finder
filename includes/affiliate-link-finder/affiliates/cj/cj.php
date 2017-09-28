@@ -41,12 +41,14 @@ class ExoCJ {
 
         $match = $this->search_products('keywords', $keywords);
 
-        foreach($match['products']['product'] as $product) {
-            if($product['advertiser-name'] !== "Footshop.eu"){
-                continue;
-            }
-            if( $product["manufacturer-sku"] === $sku ){
-                array_push($final_match, $product);
+        if($match){
+            foreach($match['products']['product'] as $product) {
+                if($product['advertiser-name'] !== "Footshop.eu"){
+                    continue;
+                }
+                if( $product["manufacturer-sku"] === $sku ){
+                    array_push($final_match, $product);
+                }
             }
         }
 
