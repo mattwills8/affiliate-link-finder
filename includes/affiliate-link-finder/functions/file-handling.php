@@ -11,12 +11,12 @@ function exo_extract_remote_zip($new_file_loc, $tmp_file_loc, $zip_url) {
 
       // write the zip to local
       if (  !file_put_contents( $tmp_file_loc, $zip_str ) ) {
-        echo "failed to write the zip to: " . $zip_url;
+        echo "failed to write the zip to: " . $zip_url."<br>";
         return FALSE;        
       }
 
     } else {
-      echo "failed to read the zip from: " . $zip_url;
+      echo "failed to read the zip from: " . $zip_url."<br>";
       return FALSE;
     }
 
@@ -110,7 +110,7 @@ function exo_download_csv($new_file_loc, $url) {
     
     //copy file to local
     if (!copy($url, $new_file_loc)) {
-        echo "Failed to copy CSV from ".$url."...";
+        echo "Failed to copy CSV from ".$url."...<br>";
     }
 }
 
@@ -121,10 +121,16 @@ if (!function_exists('exo_delete_files_from_dir')) {
     
 function exo_delete_files_from_dir($dir) {
     
+    if(!is_dir($dir)) {
+        echo 'Tried to delete directory '.$dir.' but it doesnt exist<br>';
+        return;
+    }
+    
     $files = exo_get_files_from_dir($dir); 
     
     if(empty($files)) {
         echo 'Directory was empty...<br>';
+        return;
     }
     
     foreach($files as $file) {
@@ -139,6 +145,11 @@ function exo_delete_files_from_dir($dir) {
 if (!function_exists('exo_get_files_from_dir')) {
 
 function exo_get_files_from_dir($dir) {
+    
+    if(!is_dir($dir)) {
+        echo 'Tried to get files from directory '.$dir.' but it doesnt exist<br>';
+        return;
+    }
     
     $files = array_diff(scandir($dir,1), array('..', '.'));
     return $files;

@@ -1,8 +1,8 @@
 <?php
 
-if (!class_exists('ExoEnd')) {
+if (!class_exists('ExoKickgame')) {
     
-class ExoEnd {
+class ExoKickgame {
     
     public $json;
     public $keys;
@@ -24,9 +24,9 @@ class ExoEnd {
         $this->keys = json_decode($this->json, true);
 
         //set remote feed url and local dir
-        $this->feed_url = $this->keys['end']['feedURL'];
-        $this->feed_dir = plugin_dir_path( __FILE__ )  . 'end-feed/';
-        $this->feed_filename = 'end-feed.xml';
+        $this->feed_url = $this->keys['kickgame']['feedURL'];
+        $this->feed_dir = plugin_dir_path( __FILE__ )  . 'kickgame-feed/';
+        $this->feed_filename = 'kickgame-feed.xml';
         $this->feed_path = $this->feed_dir.$this->feed_filename;
 
     }
@@ -35,14 +35,11 @@ class ExoEnd {
         
         $match = array();
         
-        foreach($this->feed_xml->entry as $product){
-            foreach($product->children($this->ns['g']) as $product_info){
-                if($product_info->getName() === 'mpn') {
+        foreach($this->feed_xml->item as $product){
+            foreach($product->children() as $product_info){
+                if($product_info->getName() === 'description') {
                     
-                    $val_with_tag = $product_info->asXml();
-                    $val = substr($val_with_tag,7,-8);
-                    
-                    if($val === $sku) {
+                    if(strpos($product_info->asXml(),$sku) !== false) {
                         array_push($match, $product);
                         echo $product_info->name->asXml().'<br>';
                     }
@@ -50,7 +47,7 @@ class ExoEnd {
             }
         }
         echo '<br>Found: '.sizeof($match).'<br>';
-        echo 'From EndClothing<br><br>';
+        echo 'From Kickgame<br><br>';
         
         return $match;
     }
@@ -62,7 +59,7 @@ class ExoEnd {
 
     public function get_new_feed() {
         
-        exo_download_in_chunks($this->feed_url, $this->feed_path);
+        //exo_download_in_chunks($this->feed_url, $this->feed_path);
         $this->feed_xml = simplexml_load_file($this->feed_path);
         if ($this->feed_xml === false) {
             echo "Failed loading XML: ";
@@ -71,7 +68,6 @@ class ExoEnd {
             }
         } else {
             $this->ns = $this->feed_xml->getNamespaces(true);
-            // rememeber children($ns['g'])
         }
     }
 }

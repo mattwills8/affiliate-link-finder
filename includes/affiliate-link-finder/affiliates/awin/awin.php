@@ -42,8 +42,7 @@ class ExoAwin {
         
         exo_extract_remote_zip($this->feed_dir,plugin_dir_path( __FILE__ )  . '../../tmp/awin-temp.zip',$this->feed_url);
         
-        $this->feed_filename = exo_get_files_from_dir($this->feed_dir)[0];
-        $this->feed_path = $this->feed_dir.$this->feed_filename;
+        $this->set_feed_path();
     }
 
     public function get_csv_object() {
@@ -56,21 +55,26 @@ class ExoAwin {
         return 0;
         
     }
+    
+    public function set_feed_path(){
+        
+        $this->feed_filename = exo_get_files_from_dir($this->feed_dir)[0];
+        $this->feed_path = $this->feed_dir.$this->feed_filename;
+    }
 
 }
 
 }
 
-/*
-$awin = new ExoAwin();
-$awin->delete_old_feed();
+//$awin = new ExoAwin();
 
-$awin->get_new_feed();
+//$awin->delete_old_feed();
 
-$csv = $awin->get_csv_object();
+//$awin->get_new_feed();
 
-$matching_rows = $csv->filter_rows_by_col_value('aw_product_id','3772931259');
-print_r($csv->get_product_links('link',$matching_rows));
-*/
+//$awin->set_feed_path();
+
+//$awin_csv = $awin->get_csv_object();
+
 
 ?>

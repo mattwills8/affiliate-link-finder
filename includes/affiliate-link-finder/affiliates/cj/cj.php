@@ -26,6 +26,93 @@ class ExoCJ {
 
     }
     
+    public function search_footshop_eu($name, $style_code) {
+        
+        $match = array();
+        $final_match = array();
+
+        $sku = $style_code;
+
+        $split_name = explode(" ",$name);
+        $keywords = '';
+        foreach($split_name as $word){
+            $keywords .= '+'.$word.' ';
+        }
+
+        $match = $this->search_products('keywords', $keywords);
+
+        foreach($match['products']['product'] as $product) {
+            if($product['advertiser-name'] !== "Footshop.eu"){
+                continue;
+            }
+            if( $product["manufacturer-sku"] === $sku ){
+                array_push($final_match, $product);
+            }
+        }
+
+        echo '<br>Found: '.sizeof($final_match).'<br>';
+        echo 'From: Footshop.eu<br><br>';
+
+        return $final_match;
+    }
+    
+    
+    public function search_cali_roots($name, $style_code) {
+        
+        $match = array();
+        $final_match = array();
+        
+        $sku = $style_code;
+        
+        $split_name = explode(" ",$name);
+        $keywords = '';
+        foreach($split_name as $word){
+            $keywords .= '+'.$word.' ';
+        }
+        $keywords = $name;
+        
+        $match = $this->search_products('keywords', $keywords);
+
+        if($match){
+            foreach($match['products']['product'] as $matched_row) {
+                if($matched_row['advertiser-name'] !== "Caliroots"){
+                    continue;
+                }
+                if(strpos($matched_row['buy-url'],$sku) !== false ){
+                    array_push($final_match, $matched_row);
+                }
+            }
+        }
+        
+        echo '<br>Found: '.sizeof($final_match).'<br>';
+        echo 'From: Caliroots<br><br>';
+        
+        return $final_match;
+    }
+    
+    public function search_sneaker_stuff($style_code, $size='10') {
+        
+        $match = array();
+        $final_match = array();
+
+        $sku = $style_code.'-'.$size;
+        
+        $match = $this->search_products_by_sku($sku);
+        if($match){
+            foreach($match as $matched_row) {
+                if($matched_row['advertiser-name'] !== "Sneakerstuff"){
+                    continue;
+                }
+                echo $matched_row['products']['product']['name'].'<br>';
+            }
+        }
+        
+        echo '<br>Found: '.sizeof($match).'<br>';
+        echo 'From: Sneakerstuff<br><br>';
+        
+        return $match['products'];
+    }
+    
     public function search_products_by_sku($sku) {
         $matches = array();
         
@@ -46,7 +133,6 @@ class ExoCJ {
         $matches = $this->client->productSearch([
             'website-id'        =>  $this->config['id'],
             'advertiser-ids'    =>  'joined',
-            'currency'          =>  'USD',
             $search_field       =>  $search_value
         ]);
         

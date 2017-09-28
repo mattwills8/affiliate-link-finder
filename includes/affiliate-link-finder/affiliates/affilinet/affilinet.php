@@ -32,6 +32,37 @@ class ExoAffilinet {
         // create a ProductsRequest Object
         $this->productsRequest = new \Affilinet\ProductData\Requests\ProductsRequest($this->affilinet);
     }
+    
+    public function search_foot_locker($name, $style_code){
+        $match = array();
+        $final_match = array();
+        $sku = $style_code;
+        
+        $match = $affilinet->get_products_by_name($name);
+        
+        if($match){
+
+            foreach($match as $matched_product) {
+                if(strpos($matched_product['props']['CF_mpn'],$sku) !== false ){
+                    array_push($final_match, $matched_product);
+                    echo $matched_product['name'].'<br>';
+                    print_r($matched_product);
+                    echo '<br><br>';
+                    break;
+                    /*
+                    *
+                    THERE WILL BE A DIFFERENT MATCH FOR EACH SIZE, THEY HAVE THE SAME LINK, BUT WE MAY NEED TO SEE THEM ALL FOR STOCK REASONS
+                    *
+                    */
+
+                }
+            }
+
+            echo '<br>Found: '.sizeof($final_match).'<br>';
+            echo 'From: affilinet<br><br>';
+        }
+        return $final_match;
+    }
 
 
     public function get_products_by_id($products_array) {
