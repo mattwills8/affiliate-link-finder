@@ -83,7 +83,6 @@ class ExoEnd {
             }
         }
         
-        var_dump($match);
         echo '<br>Found: '.sizeof($match).'<br>';
         echo 'From EndClothing<br><br>';
         

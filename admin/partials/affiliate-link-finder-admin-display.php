@@ -67,6 +67,8 @@ $cj = new ExoCJ();
 
 foreach($exo_products as $product) {
     
+    $result = array();
+    
     // set search vars
     $product_id = $product->ID;
     $name = $product->post_title;
@@ -81,29 +83,40 @@ foreach($exo_products as $product) {
     *
     * WEBGAINS SEARCHES
     *
-    
+    */
     echo '<h3>Webgains....</h3>';
 
     //nikeUK
-    $webgains->search_nike_uk($webgains_csv,$style_code);
-
+    $nike_result = $webgains->search_nike_uk($webgains_csv,$style_code);
+    if(!empty($nike_result)){
+        $result[] = $nike_result;
+    }
+    
+    
     //slam jam
-    $webgains->search_slam_jam($webgains_csv,$style_code);
-
+    $slamjam_result = $webgains->search_slam_jam($webgains_csv,$style_code);
+    if(!empty($slamjam_result)){
+        $result[] = $slamjam_result;
+    }
+    
     //sneaker baas
-    $webgains->search_sneaker_bass($webgains_csv,$style_code);
-
+    $sneakerbaas_result = $webgains->search_sneaker_bass($webgains_csv,$style_code);
+    if(!empty($sneakerbaas_result)){
+        $result[] = $sneakerbaas_result;
+    }
 
 
     /*
     *
     * END SEARCHES
     *
-    
+    */
     echo '<h3>EndClothing....</h3>';
 
-    $end->get_products_by_sku($style_code);
-
+    $endclothing_result = $end->get_products_by_sku($style_code);
+    if(!empty($endclothing_result)){
+        $result[] = $endclothing_result;
+    }
 
 
     /*
@@ -113,8 +126,10 @@ foreach($exo_products as $product) {
     */
     echo '<h3>Kickgame....</h3>';
 
-    $kickgame->get_products_by_sku($style_code);
-
+    $kickgame_result = $kickgame->get_products_by_sku($style_code);
+    if(!empty($kickgame_result)){
+        $result[] = $kickgame_result;
+    }
 
 
     /*
@@ -155,5 +170,7 @@ foreach($exo_products as $product) {
         $cj_count = 0;
     }
     */
+    
+    print_r($result);
 }
 ?>

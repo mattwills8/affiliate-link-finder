@@ -61,7 +61,6 @@ class ExoWebgains {
             }
         }
         
-        print_r($final_match);
         echo '<br>Found: '.sizeof($final_match).'<br>';
         echo 'From: Nike UK<br><br>';
         

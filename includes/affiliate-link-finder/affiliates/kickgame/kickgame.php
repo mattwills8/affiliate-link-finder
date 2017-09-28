@@ -78,7 +78,7 @@ class ExoKickgame {
         }
         echo '<br>Found: '.sizeof($match).'<br>';
         echo 'From Kickgame<br><br>';
-        var_dump($match);
+
         return $match;
     }
     
