@@ -43,12 +43,47 @@ class ExoEnd {
                     $val = substr($val_with_tag,7,-8);
                     
                     if($val === $sku) {
-                        array_push($match, $product);
-                        echo $product_info->name->asXml().'<br>';
+                        
+                        $stock = false;
+                        foreach($product->children($this->ns['g']) as   $product_info_stock){
+                            if($product_info_stock->getName() === 'availability') {
+                                
+                                $val_with_tag = $product_info_stock->asXml();
+                                $val = substr($val_with_tag,16,-17);
+                                
+                                if($val === 'in stock') {
+                                    $stock = true;
+                                }
+                            }
+                        }
+                        
+                        $link = '';
+                        foreach($product->children($this->ns['g']) as   $product_info_2){
+                            if($product_info_2->getName() === 'link') {
+                                $link = $product_info_2->asXml();
+                            }
+                        }
+                        
+                        $price = '';
+                        foreach($product->children($this->ns['g']) as   $product_info_3){
+                            if($product_info_3->getName() === 'price') {
+                                $price = $product_info_3->asXml();
+                            }
+                        }
+
+                        array_push($match, array(
+                            'retailer'      => 'End Clothing',
+                            'deeplink'      => $link,
+                            'in_stock'      => $stock,
+                            'price'         => $price,
+                            'sale-price'    => ''
+                        ));
                     }
                 }
             }
         }
+        
+        var_dump($match);
         echo '<br>Found: '.sizeof($match).'<br>';
         echo 'From EndClothing<br><br>';
         

@@ -113,7 +113,7 @@ class ExoCJ {
         
         echo '<br>Found: '.sizeof($final_match).'<br>';
         echo 'From: Sneakersnstuff<br><br>';
-        var_dump($match['products']);
+
         return $match['products'];
         
         

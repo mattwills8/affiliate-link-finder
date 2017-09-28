@@ -40,15 +40,45 @@ class ExoKickgame {
                 if($product_info->getName() === 'description') {
                     
                     if(strpos($product_info->asXml(),$sku) !== false) {
-                        array_push($match, $product);
-                        echo $product_info->name->asXml().'<br>';
+                        
+                        $stock = false;
+                        foreach($product->children() as $product_info_stock){
+                            if($product_info_stock->getName() === 'availability') {
+                                
+                                if(strpos($product_info_stock->asXml(),"In Stock") !== false) {
+                                    $stock = true;
+                                }
+                            }
+                        }
+                        
+                        $link = '';
+                        foreach($product->children() as $product_info_2){
+                            if($product_info_2->getName() === 'link') {
+                                $link = $product_info_2->asXml();
+                            }
+                        }
+                        
+                        $price = '';
+                        foreach($product->children() as $product_info_3){
+                            if($product_info_3->getName() === 'price') {
+                                $price = substr($product_info_3->asXml(),7,-8);
+                            }
+                        }
+
+                        array_push($match, array(
+                            'retailer'      => 'Kickgame',
+                            'deeplink'      => $link,
+                            'in_stock'      => $stock,
+                            'price'         => $price,
+                            'sale-price'    => ''
+                        ));
                     }
                 }
             }
         }
         echo '<br>Found: '.sizeof($match).'<br>';
         echo 'From Kickgame<br><br>';
-        
+        var_dump($match);
         return $match;
     }
     
@@ -60,7 +90,7 @@ class ExoKickgame {
     public function get_new_feed() {
         
         //exo_download_in_chunks($this->feed_url, $this->feed_path);
-        $this->feed_xml = simplexml_load_file($this->feed_path);
+        $this->feed_xml = simplexml_load_file($this->feed_path, 'SimpleXMLElement', LIBXML_NOCDATA);
         if ($this->feed_xml === false) {
             echo "Failed loading XML: ";
             foreach(libxml_get_errors() as $error) {
