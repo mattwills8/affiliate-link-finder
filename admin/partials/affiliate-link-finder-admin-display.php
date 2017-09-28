@@ -25,7 +25,7 @@ require_once plugin_dir_path( __FILE__ )  . '../../includes/affiliate-link-finde
 
 //get woocommerce products    
 $exo_args = array(
-  'numberposts' => 50,
+  'numberposts' => 10,
   'post_type'   => 'product'
 );
  
@@ -69,11 +69,12 @@ foreach($exo_products as $product) {
     
     // set search vars
     $product_id = $product->ID;
-    $name = $product->get_the_title();
-    $style_code = get_post_meta($product_id,'_sku');
+    $name = $product->post_title;
+    $style_code = get_post_meta($product_id,'_sku')[0];
     $size = '10';
     
     echo '<h1>'.$name.'</h1>';
+    echo $style_code.'<br>';
 
     
     /*
@@ -120,12 +121,11 @@ foreach($exo_products as $product) {
     *
     * AFFILINET SEARCHES
     *
-
+    */
     echo '<h3>Afflinet....</h3>';
 
     //footlocker
     $affilinet->search_foot_locker($name,$style_code);
-    */
 
 
 
@@ -133,13 +133,13 @@ foreach($exo_products as $product) {
     *
     * CJ SEARCHES
     *
-
+    */
     echo '<h3>CJ....</h3>';
 
     $cj_count = 0;
 
     //sneakerstuff
-    $cj->search_sneaker_stuff($style_code,$size);
+    $cj->search_sneakers_n_stuff($style_code,$size);
     $cj_count++;
 
     //caliroots
@@ -154,6 +154,5 @@ foreach($exo_products as $product) {
         sleep(60);
         $cj_count = 0;
     }
-    */
 }
 ?>

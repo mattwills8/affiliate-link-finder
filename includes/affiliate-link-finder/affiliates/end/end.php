@@ -62,7 +62,7 @@ class ExoEnd {
 
     public function get_new_feed() {
         
-        exo_download_in_chunks($this->feed_url, $this->feed_path);
+        //exo_download_in_chunks($this->feed_url, $this->feed_path);
         $this->feed_xml = simplexml_load_file($this->feed_path);
         if ($this->feed_xml === false) {
             echo "Failed loading XML: ";
