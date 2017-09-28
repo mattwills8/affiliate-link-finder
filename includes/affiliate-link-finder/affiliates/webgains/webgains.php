@@ -44,12 +44,24 @@ class ExoWebgains {
             foreach($match as $matched_row) {
 
                 if(strpos($matched_row[5],$style_code_1.'_'.$style_code_2) !== false) {
-                    array_push($final_match, $matched_row);
-                    echo $matched_row[10];
+                    
+                    $stock = false;
+                    if($matched_row[32]){
+                        $stock = true;
+                    }
+                    
+                    array_push($final_match, array(
+                        'retailer'      => $matched_row[12],
+                        'deeplink'      => $matched_row[3],
+                        'in_stock'      => $stock,
+                        'price'         => $matched_row[8],
+                        'sale-price'    => ''
+                    ));
                 }
             }
         }
         
+        print_r($final_match);
         echo '<br>Found: '.sizeof($final_match).'<br>';
         echo 'From: Nike UK<br><br>';
         
@@ -71,8 +83,16 @@ class ExoWebgains {
             foreach($match as $matched_row) {
 
                 if(strpos($matched_row[4],$style_code_2) !== false) {
-                    array_push($final_match, $matched_row);
-                    echo $matched_row[10].'<br>';
+                    
+                    $stock = true;
+                    
+                    array_push($final_match, array(
+                        'retailer'      => $matched_row[12],
+                        'deeplink'      => $matched_row[3],
+                        'in_stock'      => $stock,
+                        'price'         => $matched_row[8],
+                        'sale-price'    => ''
+                    ));
                 }
             }
         }
@@ -87,18 +107,28 @@ class ExoWebgains {
     public function search_sneaker_bass($webgains_csv,$style_code) {
         
         $match = array();
+        $final_match = array();
         
         $match = $webgains_csv->filter_rows_by_col_value('product_id','SB-'.$style_code);
         if($match){
             foreach($match as $matched_row) {
-                echo $matched_row[10].'<br>';
+                
+                $stock = true;
+
+                array_push($final_match, array(
+                    'retailer'      => $matched_row[12],
+                    'deeplink'      => $matched_row[3],
+                    'in_stock'      => $stock,
+                    'price'         => $matched_row[8],
+                    'sale-price'    => ''
+                ));
             }
         }
         
-        echo '<br>Found: '.sizeof($match).'<br>';
+        echo '<br>Found: '.sizeof($final_match).'<br>';
         echo 'From: Sneakerbass<br><br>';
         
-        return $match;
+        return $final_match;
     }
     
     public function split_style_code($style_code) {
