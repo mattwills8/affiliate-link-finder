@@ -26,7 +26,7 @@ class ExoWebgains {
 
         //set remote feed url and local dir
         $this->feed_url = $this->keys['webgains']['feedURL'];
-        $this->feed_dir = AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/afffiliates/webgains/webgains-feed/';
+        $this->feed_dir = AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/webgains/webgains-feed/';
     }
 
     public function search_nike_uk($webgains_csv, $style_code) {

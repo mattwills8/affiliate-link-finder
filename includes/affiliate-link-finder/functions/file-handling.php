@@ -1,7 +1,7 @@
-<?php 
+<?php
 
 if (!function_exists('exo_extract_remote_zip')) {
-    
+
 function exo_extract_remote_zip($new_file_loc, $tmp_file_loc, $zip_url) {
 
     echo 'Copying Zip to local....<br>';
@@ -12,7 +12,7 @@ function exo_extract_remote_zip($new_file_loc, $tmp_file_loc, $zip_url) {
       // write the zip to local
       if (  !file_put_contents( $tmp_file_loc, $zip_str ) ) {
         echo "failed to write the zip to: " . $zip_url."<br>";
-        return FALSE;        
+        return FALSE;
       }
 
     } else {
@@ -41,12 +41,12 @@ function exo_extract_remote_zip($new_file_loc, $tmp_file_loc, $zip_url) {
         return 0;
     }
 }
-    
+
 }
 
 
 if (!function_exists('exo_file_get_contents_curl')) {
-    
+
 function exo_file_get_contents_curl( $url ) {
 
   $ch = curl_init();
@@ -73,9 +73,9 @@ function exo_file_get_contents_curl( $url ) {
 
 
 if (!function_exists('exo_download_in_chunks')) {
-    
+
 function exo_download_in_chunks($srcName, $dstName, $chunkSize = 1, $returnbytes = true) {
-    
+
     $chunksize = $chunkSize*(1024*1024); // How many bytes per chunk
     $data = '';
     $bytesCount = 0;
@@ -103,11 +103,11 @@ function exo_download_in_chunks($srcName, $dstName, $chunkSize = 1, $returnbytes
 
 
 if (!function_exists('exo_download_csv')) {
-    
+
 function exo_download_csv($new_file_loc, $url) {
-    
+
     echo 'Downloading CSV....<br>';
-    
+
     //copy file to local
     if (!copy($url, $new_file_loc)) {
         echo "Failed to copy CSV from ".$url."...<br>";
@@ -118,21 +118,22 @@ function exo_download_csv($new_file_loc, $url) {
 
 
 if (!function_exists('exo_delete_files_from_dir')) {
-    
+
 function exo_delete_files_from_dir($dir) {
-    
+
     if(!is_dir($dir)) {
         echo 'Tried to delete directory '.$dir.' but it doesnt exist<br>';
-        return;
+        echo 'Creating directory: '.$dir.'<br>';
+        mkdir($dir, 0777, true);
     }
-    
-    $files = exo_get_files_from_dir($dir); 
-    
+
+    $files = exo_get_files_from_dir($dir);
+
     if(empty($files)) {
         echo 'Directory was empty...<br>';
         return;
     }
-    
+
     foreach($files as $file) {
         echo 'Deleting '.$file.'<br>';
         unlink($dir.$file);
@@ -145,12 +146,12 @@ function exo_delete_files_from_dir($dir) {
 if (!function_exists('exo_get_files_from_dir')) {
 
 function exo_get_files_from_dir($dir) {
-    
+
     if(!is_dir($dir)) {
         echo 'Tried to get files from directory '.$dir.' but it doesnt exist<br>';
         return;
     }
-    
+
     $files = array_diff(scandir($dir,1), array('..', '.'));
     return $files;
 }
