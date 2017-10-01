@@ -16,12 +16,12 @@
 
 <?php
 
-require_once plugin_dir_path( __FILE__ )  . '../../includes/affiliate-link-finder/affiliates/affilinet/affilinet.php';
-require_once plugin_dir_path( __FILE__ )  . '../../includes/affiliate-link-finder/affiliates/awin/awin.php';
-require_once plugin_dir_path( __FILE__ )  . '../../includes/affiliate-link-finder/affiliates/cj/cj.php';
-require_once plugin_dir_path( __FILE__ )  . '../../includes/affiliate-link-finder/affiliates/end/end.php';
-require_once plugin_dir_path( __FILE__ )  . '../../includes/affiliate-link-finder/affiliates/kickgame/kickgame.php';
-require_once plugin_dir_path( __FILE__ )  . '../../includes/affiliate-link-finder/affiliates/webgains/webgains.php';
+require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/affilinet/affilinet.php';
+require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/awin/awin.php';
+require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/cj/cj.php';
+require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/end/end.php';
+require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/kickgame/kickgame.php';
+require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/webgains/webgains.php';
 
 //get woocommerce products
 $exo_args = array(
@@ -36,25 +36,25 @@ $exo_products = get_posts( $exo_args );
 
 $webgains = new ExoWebgains();
 
-//$webgains->delete_old_feed();
+$webgains->delete_old_feed();
 
-//$webgains->get_new_feed();
+$webgains->get_new_feed();
 
-$webgains->set_feed_path();
+//$webgains->set_feed_path();
 
 $webgains_csv = $webgains->get_csv_object();
 
 
 $end = new ExoEnd();
 
-//$end->delete_old_feed();
+$end->delete_old_feed();
 
 $end->get_new_feed();
 
 
 $kickgame = new ExoKickgame();
 
-//$end->delete_old_feed();
+$end->delete_old_feed();
 
 $kickgame->get_new_feed();
 

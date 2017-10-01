@@ -11,10 +11,10 @@ class ExoCJ {
 
     public function __construct() {
 
-        require_once plugin_dir_path( __FILE__ )  . '../../vendor/autoload.php';
+        require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/vendor/autoload.php';
 
         //get keys from json file
-        $this->json = file_get_contents(plugin_dir_path( __FILE__ )  . '../../keys.json');
+        $this->json = file_get_contents(AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/keys.json');
         $this->keys = json_decode($this->json, true);
 
         $this->config = [

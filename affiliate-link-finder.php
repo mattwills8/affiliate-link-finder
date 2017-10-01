@@ -32,6 +32,9 @@ if ( ! defined( 'WPINC' ) ) {
 
 define( 'PLUGIN_VERSION', '1.0.0' );
 
+
+define( 'AFFILIATE_LINK_FINDER_ROOT', plugin_dir_path( __FILE__ ) );
+
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-affiliate-link-finder-activator.php

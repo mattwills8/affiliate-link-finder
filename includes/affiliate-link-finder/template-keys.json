@@ -1,0 +1,19 @@
+{
+    "affilinet" : {
+        "id"        :   "",
+        "pwd"       :   ""
+    },
+    "awin"      : {
+        "feedURL"   : ""
+    },
+    "cj"        : {
+        "key"       : "",
+        "id"        : ""
+    },
+    "end"       : {
+        "feedURL"   : ""
+    },
+    "webgains"  : {
+        "feedURL"   : ""
+    }
+}

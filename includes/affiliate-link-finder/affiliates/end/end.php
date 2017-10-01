@@ -17,15 +17,15 @@ class ExoEnd {
         libxml_use_internal_errors(true);
         set_time_limit ( 300 );
 
-        include plugin_dir_path( __FILE__ )  . '../../functions/file-handling.php';
+        include AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/functions/file-handling.php';
 
         //get keys from json file
-        $this->json = file_get_contents(plugin_dir_path( __FILE__ )  . '../../keys.json');
+        $this->json = file_get_contents(AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/keys.json');
         $this->keys = json_decode($this->json, true);
 
         //set remote feed url and local dir
         $this->feed_url = $this->keys['end']['feedURL'];
-        $this->feed_dir = plugin_dir_path( __FILE__ )  . 'end-feed/';
+        $this->feed_dir = AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/end/end-feed/';
         $this->feed_filename = 'end-feed.xml';
         $this->feed_path = $this->feed_dir.$this->feed_filename;
 
@@ -94,7 +94,7 @@ class ExoEnd {
 
     public function get_new_feed() {
 
-        //exo_download_in_chunks($this->feed_url, $this->feed_path);
+        exo_download_in_chunks($this->feed_url, $this->feed_path);
         $this->feed_xml = simplexml_load_file($this->feed_path);
         if ($this->feed_xml === false) {
             echo "Failed loading XML: ";
