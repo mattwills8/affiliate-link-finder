@@ -197,6 +197,39 @@ foreach($exo_products as $product) {
 
 
     var_dump($result);
+
+    $retailer_string = '';
+    $retailer_ids = '';
+    $retailer_links = '';
+    $retailer_stock = '';
+    $retailer_release_dates = '';
+    $i = 0;
+    foreach($result as $single_result) {
+
+      $retailer_id = $retailers_id_list[$single_result['retailer']];
+      $retailer_id_len = strlen((string)$retailer_id);
+
+      $retailer_link = $single_result['deeplink'];
+      $retailer_link_len = strlen($retailer_link);
+
+      $retailer_stock_status = (string)(int)$single_result['in_stock'];
+
+      //TODO: PULL RELEASE DATA FROM FEEDS
+      $retailer_release_date = '1509408000';
+
+      $retailer_ids .= 'i:'.(string)$i.';s:'.$retailer_id_len.':'.$retailer_id;
+      $retailer_links .= 'i:'.(string)$i.';s:'.$retailer_link_len.':'.$retailer_link.'}';
+      $retailer_stock .= 'i:'.(string)$i.';s:1:"'.$retailer_stock_status.'";';
+      $retailer_release_dates .= 'i:'.(string)$i.';i:'.$retailer_release_date.';';
+
+      $i++;
+    }
+    $retailer_string .= 'a:4:{s:11:"retailer_id";a:'.(string)$i.':{'.$retailer_ids.'}';
+    $retailer_string .= 's:13:"retailer_link";a:'.(string)$i.':{'.$retailer_links.';}';
+    $retailer_string .= 's:12:"stock_status";a:'.(string)$i.':{'.$retailer_stock.'}';
+    $retailer_string .= 's:21:"retailer_release_date";a:'.(string)$i.':{'.$retailer_release_dates.'}}';
+
+    echo $retailer_string;
 }
 
 ?>
