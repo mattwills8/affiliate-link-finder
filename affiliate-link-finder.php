@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       Affiliate Link Finder
  * Plugin URI:        https://github.com/mattwills8
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       Scans db and updates affiliate links and stock by matching on style code
  * Version:           1.0.0
  * Author:            Matt Wills
  * Author URI:        https://github.com/mattwills8

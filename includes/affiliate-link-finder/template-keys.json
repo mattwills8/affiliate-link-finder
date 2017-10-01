@@ -13,6 +13,9 @@
     "end"       : {
         "feedURL"   : ""
     },
+    "kickgame"  : {
+        "feedURL"   : ""
+    },
     "webgains"  : {
         "feedURL"   : ""
     }

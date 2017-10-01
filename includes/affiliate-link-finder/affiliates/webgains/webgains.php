@@ -31,6 +31,11 @@ class ExoWebgains {
 
     public function search_nike_uk($webgains_csv, $style_code) {
 
+        if(!is_object($webgains_csv)){
+            echo 'Couldnt load csv...<br>';
+            return;
+        }
+
         $match = array();
         $final_match = array();
 
@@ -69,6 +74,11 @@ class ExoWebgains {
 
     public function search_slam_jam($webgains_csv, $style_code) {
 
+        if(!is_object($webgains_csv)){
+            echo 'Couldnt load csv...<br>';
+            return;
+        }
+
         $match = array();
         $final_match = array();
 
@@ -104,6 +114,11 @@ class ExoWebgains {
     }
 
     public function search_sneaker_bass($webgains_csv,$style_code) {
+
+        if(!is_object($webgains_csv)){
+            echo 'Couldnt load csv...<br>';
+            return;
+        }
 
         $match = array();
         $final_match = array();
