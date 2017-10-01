@@ -23,6 +23,19 @@ require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affil
 require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/kickgame/kickgame.php';
 require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/webgains/webgains.php';
 
+$retailers_id_list = [
+  'Foot Locker'   =>  158,
+  'Footshop.eu'   =>  314,
+  'Caliroots'   =>  50,
+  'SneakersnStuff'   =>  42,
+  'End Clothing'   =>  49,
+  'Kickgame'   =>  315,
+  'slam jam socialism'   =>  41,
+  'Sneaker Baas UK'   =>  316,
+  'NIKE UK'   =>  53,
+
+];
+
 //get woocommerce products
 $exo_args = array(
   'numberposts' => 5,
