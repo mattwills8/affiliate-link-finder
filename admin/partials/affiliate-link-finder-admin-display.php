@@ -83,7 +83,7 @@ foreach($exo_products as $product) {
     *
     * WEBGAINS SEARCHES
     *
-    */
+    
     echo '<h3>Webgains....</h3>';
 
     //nikeUK
@@ -110,7 +110,7 @@ foreach($exo_products as $product) {
     *
     * END SEARCHES
     *
-    */
+    
     echo '<h3>EndClothing....</h3>';
 
     $endclothing_result = $end->get_products_by_sku($style_code);
@@ -123,12 +123,12 @@ foreach($exo_products as $product) {
     *
     * KICKGAME SEARCHES
     *
-    */
+    
     echo '<h3>Kickgame....</h3>';
 
     $kickgame_result = $kickgame->get_products_by_sku($style_code);
     if(!empty($kickgame_result)){
-        $result[] = $kickgame_result;
+        $result[] = $kickgame_result[0];
     }
 
 
@@ -136,7 +136,7 @@ foreach($exo_products as $product) {
     *
     * AFFILINET SEARCHES
     *
-    
+    */
     echo '<h3>Afflinet....</h3>';
 
     //footlocker
