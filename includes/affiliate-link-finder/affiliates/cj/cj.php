@@ -1,16 +1,16 @@
 <?php
 
 if (!class_exists('ExoCJ')) {
-    
+
 class ExoCJ {
-    
+
     public $json;
     public $keys;
     public $config;
     public $client;
-    
+
     public function __construct() {
-        
+
         require_once plugin_dir_path( __FILE__ )  . '../../vendor/autoload.php';
 
         //get keys from json file
@@ -25,9 +25,9 @@ class ExoCJ {
         $this->client = new \CROSCON\CommissionJunction\Client($this->config['key']);
 
     }
-    
+
     public function search_footshop_eu($name, $style_code) {
-        
+
         $match = array();
         $final_match = array();
 
@@ -43,11 +43,18 @@ class ExoCJ {
 
         if($match){
             foreach($match['products']['product'] as $product) {
+
                 if($product['advertiser-name'] !== "Footshop.eu"){
                     continue;
                 }
                 if( $product["manufacturer-sku"] === $sku ){
-                    array_push($final_match, $product);
+                    array_push($final_match, array(
+                        'retailer'      => 'Footshop.eu',
+                        'deeplink'      => $product['buy-url'],
+                        'in_stock'      => ($product['in-stock'] === 'true'),
+                        'price'         => $product['price'].$product['currency'],
+                        'sale-price'    => $product['sale-price'].$product['currency']
+                    ));
                 }
             }
         }
@@ -57,22 +64,22 @@ class ExoCJ {
 
         return $final_match;
     }
-    
-    
+
+
     public function search_cali_roots($name, $style_code) {
-        
+
         $match = array();
         $final_match = array();
-        
+
         $sku = $style_code;
-        
+
         $split_name = explode(" ",$name);
         $keywords = '';
         foreach($split_name as $word){
             $keywords .= '+'.$word.' ';
         }
         $keywords = $name;
-        
+
         $match = $this->search_products('keywords', $keywords);
 
         if($match){
@@ -81,24 +88,30 @@ class ExoCJ {
                     continue;
                 }
                 if(strpos($matched_row['buy-url'],$sku) !== false ){
-                    array_push($final_match, $matched_row);
+                    array_push($final_match, array(
+                        'retailer'      => 'Caliroots',
+                        'deeplink'      => $product['buy-url'],
+                        'in_stock'      => ($product['in-stock'] === 'true'),
+                        'price'         => $product['price'].$product['currency'],
+                        'sale-price'    => $product['sale-price'].$product['currency']
+                    ));
                 }
             }
         }
-        
+
         echo '<br>Found: '.sizeof($final_match).'<br>';
         echo 'From: Caliroots<br><br>';
-        
+
         return $final_match;
     }
-    
+
     public function search_sneakers_n_stuff($style_code, $size='10') {
-        
+
         $match = array();
         $final_match = array();
 
         $sku = $style_code.'-'.$size;
-        
+
         $match = $this->search_products_by_sku($sku);
         if($match){
             foreach($match as $matched_row) {
@@ -106,46 +119,52 @@ class ExoCJ {
                     continue;
                 }
                 //if(strpos($matched_row['buy-url'],$sku) !== false ){
-                    array_push($final_match, $matched_row);
+                    array_push($final_match, array(
+                        'retailer'      => 'SneakersnStuff',
+                        'deeplink'      => $product['buy-url'],
+                        'in_stock'      => ($product['in-stock'] === 'true'),
+                        'price'         => $product['price'].$product['currency'],
+                        'sale-price'    => $product['sale-price'].$product['currency']
+                    ));
                 //}
             }
         }
-        
+
         echo '<br>Found: '.sizeof($final_match).'<br>';
         echo 'From: Sneakersnstuff<br><br>';
 
         return $match['products'];
-        
-        
+
+
     }
-    
+
     public function search_products_by_sku($sku) {
         $matches = array();
-        
+
         $matches = $this->search_products('advertiser-sku', $sku);
-        
+
         if(empty($matches)){
             $matches = $this->search_products('manufacturer-sku', $sku);
         }
-        
+
         if(empty($matches)){
             return 0;
         }
         return $matches;
     }
-    
+
     public function search_products($search_field, $search_value) {
-        
+
         $matches = $this->client->productSearch([
             'website-id'        =>  $this->config['id'],
             'advertiser-ids'    =>  'joined',
             $search_field       =>  $search_value
         ]);
-        
+
         if($matches['products']['@attributes']['total-matched'] !== '0') {
             return $matches;
         }
-        
+
         return 0;
     }
 
@@ -153,4 +172,4 @@ class ExoCJ {
 
 }
 
-?>  
+?>
