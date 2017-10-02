@@ -15,6 +15,7 @@
 ?>
 
 <?php
+set_time_limit ( 15000 );
 
 require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/affilinet/affilinet.php';
 require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/awin/awin.php';
@@ -74,10 +75,9 @@ $end->get_new_feed();
 
 $affilinet = new ExoAffilinet();
 
-/*
 $cj = new ExoCJ();
 
-*/
+
 foreach($exo_products as $product) {
 
     $result = array();
@@ -208,7 +208,6 @@ foreach($exo_products as $product) {
         $cj_count = 0;
     }
 
-    */
     echo '<br><br>';
 
     if(sizeOf($result) != 0){
