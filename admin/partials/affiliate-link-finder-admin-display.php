@@ -65,6 +65,7 @@ $end->delete_old_feed();
 $end->get_new_feed();
 
 
+/*
 $kickgame = new ExoKickgame();
 
 $end->delete_old_feed();
@@ -77,20 +78,22 @@ $affilinet = new ExoAffilinet();
 
 $cj = new ExoCJ();
 
-
+*/
 foreach($exo_products as $product) {
 
     $result = array();
 
-    // set search vars
+    // set search vars and get necessary meta
     $product_id = $product->ID;
     $name = $product->post_title;
     $style_code = get_post_meta($product_id,'_sku')[0];
     $size = '10';
 
+    $release_date_dt = new DateTime(get_post_meta($product_id,'product_release_date')[0]);
+    $release_date_unix = $release_date_dt != '' ? $release_date_dt->getTimestamp() : '';
+
     echo '<h1>'.$name.'</h1>';
     echo $style_code.'<br>';
-
 
     /*
     *
@@ -136,7 +139,7 @@ foreach($exo_products as $product) {
     *
     * KICKGAME SEARCHES
     *
-    */
+
     echo '<h3>Kickgame....</h3>';
 
     $kickgame_result = $kickgame->get_products_by_sku($style_code);
@@ -149,7 +152,7 @@ foreach($exo_products as $product) {
     *
     * AFFILINET SEARCHES
     *
-    */
+
     echo '<h3>Afflinet....</h3>';
 
     //footlocker
@@ -163,7 +166,7 @@ foreach($exo_products as $product) {
     *
     * CJ SEARCHES
     *
-    */
+
     echo '<h3>CJ....</h3>';
 
     $cj_count = 0;
@@ -195,41 +198,63 @@ foreach($exo_products as $product) {
         $cj_count = 0;
     }
 
-
+    */
     var_dump($result);
+    echo '<br><br>';
 
-    $retailer_string = '';
-    $retailer_ids = '';
-    $retailer_links = '';
-    $retailer_stock = '';
-    $retailer_release_dates = '';
-    $i = 0;
-    foreach($result as $single_result) {
+    if(sizeOf($result) != 0){
 
-      $retailer_id = $retailers_id_list[$single_result['retailer']];
-      $retailer_id_len = strlen((string)$retailer_id);
+      $retailer_string = '';
+      $retailer_ids = '';
+      $retailer_links = '';
+      $retailer_stock = '';
+      $retailer_release_dates = '';
+      $retailer_prices = '';
+      $retailer_sale_prices = '';
+      $i = 0;
+      //creating string to input into retailer field
+      foreach($result as $single_result_wrapper_arr) {
+        $single_result = $single_result_wrapper_arr[0];
 
-      $retailer_link = $single_result['deeplink'];
-      $retailer_link_len = strlen($retailer_link);
+        //format data for inputting into retailer field
+        $retailer_id = $retailers_id_list[$single_result['retailer']];
+        $retailer_id_len = strlen((string)$retailer_id);
 
-      $retailer_stock_status = (string)(int)$single_result['in_stock'];
+        $retailer_link = $single_result['deeplink'];
+        $retailer_link_len = strlen($retailer_link);
 
-      //TODO: PULL RELEASE DATA FROM FEEDS
-      $retailer_release_date = '1509408000';
+        $retailer_stock_status = (string)(int)$single_result['in_stock'];
 
-      $retailer_ids .= 'i:'.(string)$i.';s:'.$retailer_id_len.':'.$retailer_id;
-      $retailer_links .= 'i:'.(string)$i.';s:'.$retailer_link_len.':'.$retailer_link.'}';
-      $retailer_stock .= 'i:'.(string)$i.';s:1:"'.$retailer_stock_status.'";';
-      $retailer_release_dates .= 'i:'.(string)$i.';i:'.$retailer_release_date.';';
+        $retailer_release_date = $release_date_unix;
 
-      $i++;
+        $retailer_ids .= 'i:'.(string)$i.';s:'.$retailer_id_len.':"'.$retailer_id.'";';
+        $retailer_links .= 'i:'.(string)$i.';s:'.$retailer_link_len.':"'.$retailer_link.'";';
+        $retailer_stock .= 'i:'.(string)$i.';s:1:"'.$retailer_stock_status.'";';
+        $retailer_release_dates .= 'i:'.(string)$i.';i:'.$retailer_release_date.';';
+
+        if($single_result['price'] != ''){
+          $retailer_prices .= $single_result['price'].'/';
+        }
+
+        if($single_result['sale-price'] != ''){
+          $retailer_sale_prices .= $single_result['sale-price'].'/';
+        }
+
+
+        $i++;
+      }
+      $retailer_string .= 'a:4:{s:11:"retailer_id";a:'.(string)$i.':{'.$retailer_ids.'}';
+      $retailer_string .= 's:13:"retailer_link";a:'.(string)$i.':{'.$retailer_links.'}';
+      $retailer_string .= 's:12:"stock_status";a:'.(string)$i.':{'.$retailer_stock.'}';
+      $retailer_string .= 's:21:"retailer_release_date";a:'.(string)$i.':{'.$retailer_release_dates.'}}';
+
+      echo '<br>';
+      echo $retailer_prices;
+      echo '<br>';
+      echo $retailer_sale_prices;
+
+      update_post_meta($product_id,'product_retailer',$retailer_string);
     }
-    $retailer_string .= 'a:4:{s:11:"retailer_id";a:'.(string)$i.':{'.$retailer_ids.'}';
-    $retailer_string .= 's:13:"retailer_link";a:'.(string)$i.':{'.$retailer_links.';}';
-    $retailer_string .= 's:12:"stock_status";a:'.(string)$i.':{'.$retailer_stock.'}';
-    $retailer_string .= 's:21:"retailer_release_date";a:'.(string)$i.':{'.$retailer_release_dates.'}}';
-
-    echo $retailer_string;
 }
 
 ?>
