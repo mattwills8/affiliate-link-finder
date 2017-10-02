@@ -44,7 +44,6 @@ $exo_args = array(
 
 $exo_products = get_posts( $exo_args );
 
-
 //get feeds
 
 $webgains = new ExoWebgains();
@@ -65,23 +64,27 @@ $end->delete_old_feed();
 $end->get_new_feed();
 
 
-/*
-$kickgame = new ExoKickgame();
 
-$end->delete_old_feed();
+//$kickgame = new ExoKickgame();
 
-$kickgame->get_new_feed();
+//$end->delete_old_feed();
+
+//$kickgame->get_new_feed();
 
 
 $affilinet = new ExoAffilinet();
 
-
+/*
 $cj = new ExoCJ();
 
 */
 foreach($exo_products as $product) {
 
     $result = array();
+    $past_retailers = array();
+    $found_retailers = array();
+    $all_retailers_arr = array();
+    $all_retailers = '';
 
     // set search vars and get necessary meta
     $product_id = $product->ID;
@@ -91,6 +94,13 @@ foreach($exo_products as $product) {
 
     $release_date_dt = new DateTime(get_post_meta($product_id,'product_release_date')[0]);
     $release_date_unix = $release_date_dt != '' ? $release_date_dt->getTimestamp() : '';
+
+    $past_retailers = get_post_meta($product_id,'mw_all_retailers');
+    if($past_retailers){
+      $past_retailers_arr = explode("/",$past_retailers[0]);
+    }
+
+    echo 'past retailers: '.$past_retailers[0].'<br>';
 
     echo '<h1>'.$name.'</h1>';
     echo $style_code.'<br>';
@@ -152,7 +162,7 @@ foreach($exo_products as $product) {
     *
     * AFFILINET SEARCHES
     *
-
+    */
     echo '<h3>Afflinet....</h3>';
 
     //footlocker
@@ -166,7 +176,7 @@ foreach($exo_products as $product) {
     *
     * CJ SEARCHES
     *
-
+    */
     echo '<h3>CJ....</h3>';
 
     $cj_count = 0;
@@ -199,7 +209,6 @@ foreach($exo_products as $product) {
     }
 
     */
-    var_dump($result);
     echo '<br><br>';
 
     if(sizeOf($result) != 0){
@@ -212,6 +221,33 @@ foreach($exo_products as $product) {
       $retailer_prices = '';
       $retailer_sale_prices = '';
       $i = 0;
+
+      foreach($result as $single_result_wrapper_arr) {
+        $single_result = $single_result_wrapper_arr[0];
+        $found_retailers[] = $single_result['retailer'];
+      }
+
+      echo 'found retailers: ';
+      print_r($found_retailers);
+      echo '<br>';
+
+      if($past_retailers) {
+        foreach ($past_retailers_arr as $past_retailer) {
+          if((!in_array($past_retailer,$found_retailers)) && $past_retailer != ''){
+            echo 'past retailer: '.$past_retailer.' was not in results array<br>';
+            array_push($result, array(array(
+              'retailer'      => $past_retailer,
+              'deeplink'      => '',
+              'in_stock'      => false,
+              'price'         => '',
+              'sale-price'    => ''
+            )));
+          }
+        }
+      }
+
+      var_dump($result);
+      echo '<br><br>';
       //creating string to input into retailer field
       foreach($result as $single_result_wrapper_arr) {
         $single_result = $single_result_wrapper_arr[0];
@@ -219,6 +255,7 @@ foreach($exo_products as $product) {
         //format data for inputting into retailer field
         $retailer_id = $retailers_id_list[$single_result['retailer']];
         $retailer_id_len = strlen((string)$retailer_id);
+        $all_retailers_arr[] = $single_result['retailer'];
 
         $retailer_link = $single_result['deeplink'];
         $retailer_link_len = strlen($retailer_link);
@@ -248,12 +285,13 @@ foreach($exo_products as $product) {
       $retailer_string .= 's:12:"stock_status";a:'.(string)$i.':{'.$retailer_stock.'}';
       $retailer_string .= 's:21:"retailer_release_date";a:'.(string)$i.':{'.$retailer_release_dates.'}}';
 
+      echo 'all retailers: ';
+      $all_retailers = implode('/',$all_retailers_arr);
+      echo $all_retailers;
       echo '<br>';
-      echo $retailer_prices;
-      echo '<br>';
-      echo $retailer_sale_prices;
 
       update_post_meta($product_id,'product_retailer',$retailer_string);
+      update_post_meta($product_id,'mw_all_retailers',$all_retailers);
     }
 }
 
