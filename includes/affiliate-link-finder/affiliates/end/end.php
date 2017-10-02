@@ -68,7 +68,7 @@ class ExoEnd {
                         foreach($product->children($this->ns['g']) as   $product_info_3){
                             if($product_info_3->getName() === 'price') {
 
-                                $price_with_tag = $product_info_2->asXml();
+                                $price_with_tag = $product_info_3->asXml();
                                 $price = substr($price_with_tag,9,-10);
                             }
                         }
