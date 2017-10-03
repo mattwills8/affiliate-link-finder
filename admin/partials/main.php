@@ -211,7 +211,6 @@ foreach($exo_products as $product) {
       echo 'Couldnt search CJ since object was not created';
     }
 
-
     echo '<br><br>';
 
     if(sizeOf($result) != 0){
