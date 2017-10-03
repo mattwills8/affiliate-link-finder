@@ -30,7 +30,7 @@
   <input value="Run Now" type="submit" name='run_affiliate_link_finder' class="btn" />
 </form>
 
-<p>This could potentially take a couple of hours..</p>
+<p>This could take a while if running manually... Go make yourself a cuppa'!</p>
 
 <?php
 

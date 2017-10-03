@@ -36,7 +36,8 @@ $retailers_id_list = [
 
 //get woocommerce products
 $exo_args = array(
-  'numberposts' => 10,
+  //all posts if -1
+  'numberposts' => -1,
   'post_type'   => 'product'
 );
 
@@ -97,6 +98,8 @@ foreach($exo_products as $product) {
       $past_retailers_arr = explode("/",$past_retailers[0]);
     }
 
+    echo '<h2>'.$name.'</h2>';
+    echo '<h3>'.$style_code.'</h3>';
     /*
     *
     * WEBGAINS SEARCHES
@@ -280,6 +283,8 @@ foreach($exo_products as $product) {
       $retailer_string .= 's:13:"retailer_link";a:'.(string)$i.':{'.$retailer_links.'}';
       $retailer_string .= 's:12:"stock_status";a:'.(string)$i.':{'.$retailer_stock.'}';
       $retailer_string .= 's:21:"retailer_release_date";a:'.(string)$i.':{'.$retailer_release_dates.'}}';
+
+      echo '<br>retailer string: '.$retailer_string.'<br>';
 
       update_post_meta($product_id,'product_retailer',$retailer_string);
       update_post_meta($product_id,'mw_all_retailers',$all_retailers);
