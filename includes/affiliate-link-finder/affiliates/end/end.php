@@ -58,18 +58,14 @@ class ExoEnd {
                         $link = '';
                         foreach($product->children($this->ns['g']) as   $product_info_2){
                             if($product_info_2->getName() === 'link') {
-
-                                $link_with_tag = $product_info_2->asXml();
-                                $link = substr($link_with_tag,8,-9);
+                                $link = $product_info_2->asXml();
                             }
                         }
 
                         $price = '';
                         foreach($product->children($this->ns['g']) as   $product_info_3){
                             if($product_info_3->getName() === 'price') {
-
-                                $price_with_tag = $product_info_3->asXml();
-                                $price = substr($price_with_tag,9,-10);
+                                $price = $product_info_3->asXml();
                             }
                         }
 

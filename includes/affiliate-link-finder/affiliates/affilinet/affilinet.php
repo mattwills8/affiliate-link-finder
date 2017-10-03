@@ -27,10 +27,20 @@ class ExoAffilinet {
         ];
 
         //create affilinet helper object
-        $this->affilinet = new \Affilinet\ProductData\AffilinetClient($this->config);
+        try {
+          $this->affilinet = new \Affilinet\ProductData\AffilinetClient($this->config);
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
 
         // create a ProductsRequest Object
-        $this->productsRequest = new \Affilinet\ProductData\Requests\ProductsRequest($this->affilinet);
+        try {
+          $this->productsRequest = new \Affilinet\ProductData\Requests\ProductsRequest($this->affilinet);
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
     }
 
     public function search_foot_locker($name, $style_code){

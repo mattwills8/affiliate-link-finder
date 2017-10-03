@@ -22,8 +22,12 @@ class ExoCJ {
             'id'    => $this->keys['cj']['id']
         ];
 
-        $this->client = new \CROSCON\CommissionJunction\Client($this->config['key']);
-
+        try {
+          $this->client = new \CROSCON\CommissionJunction\Client($this->config['key']);
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
     }
 
     public function search_footshop_eu($name, $style_code) {
@@ -155,11 +159,16 @@ class ExoCJ {
 
     public function search_products($search_field, $search_value) {
 
-        $matches = $this->client->productSearch([
-            'website-id'        =>  $this->config['id'],
-            'advertiser-ids'    =>  'joined',
-            $search_field       =>  $search_value
-        ]);
+        try {
+          $matches = $this->client->productSearch([
+              'website-id'        =>  $this->config['id'],
+              'advertiser-ids'    =>  'joined',
+              $search_field       =>  $search_value
+          ]);
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
 
         if($matches['products']['@attributes']['total-matched'] !== '0') {
             return $matches;
