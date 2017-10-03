@@ -15,7 +15,11 @@
 ?>
 
 <?php
-set_time_limit ( 15000 );
+set_time_limit(12000);
+ini_set('memory_limit', '20000M');
+ini_set('max_file_uploads', '200000');
+ini_set('max_input_time', '12000');
+ini_set('post_max_size', '20000M');
 
 require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/affilinet/affilinet.php';
 require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/awin/awin.php';
@@ -39,14 +43,14 @@ $retailers_id_list = [
 
 //get woocommerce products
 $exo_args = array(
-  'numberposts' => 5,
+  'numberposts' => 2,
   'post_type'   => 'product'
 );
 
 $exo_products = get_posts( $exo_args );
 
 //get feeds
-
+/*
 $webgains = new ExoWebgains();
 
 $webgains->delete_old_feed();
@@ -66,18 +70,18 @@ $end->get_new_feed();
 
 
 
-//$kickgame = new ExoKickgame();
+$kickgame = new ExoKickgame();
 
-//$end->delete_old_feed();
+$kickgame->delete_old_feed();
 
-//$kickgame->get_new_feed();
-
+$kickgame->get_new_feed();
+*/
 
 $affilinet = new ExoAffilinet();
-
+/*
 $cj = new ExoCJ();
 
-
+*/
 foreach($exo_products as $product) {
 
     $result = array();
@@ -109,7 +113,7 @@ foreach($exo_products as $product) {
     *
     * WEBGAINS SEARCHES
     *
-    */
+
     echo '<h3>Webgains....</h3>';
 
     //nikeUK
@@ -136,7 +140,7 @@ foreach($exo_products as $product) {
     *
     * END SEARCHES
     *
-    */
+
     echo '<h3>EndClothing....</h3>';
 
     $endclothing_result = $end->get_products_by_sku($style_code);
@@ -176,7 +180,7 @@ foreach($exo_products as $product) {
     *
     * CJ SEARCHES
     *
-    */
+    *
     echo '<h3>CJ....</h3>';
 
     $cj_count = 0;
@@ -207,7 +211,7 @@ foreach($exo_products as $product) {
         sleep(60);
         $cj_count = 0;
     }
-
+    */
     echo '<br><br>';
 
     if(sizeOf($result) != 0){
