@@ -36,7 +36,7 @@ $retailers_id_list = [
 
 //get woocommerce products
 $exo_args = array(
-  'numberposts' => 5,
+  'numberposts' => 10,
   'post_type'   => 'product'
 );
 
@@ -62,13 +62,13 @@ $end->delete_old_feed();
 $end->get_new_feed();
 
 
-/*
-$kickgame = new ExoKickgame();
 
-$kickgame->delete_old_feed();
+//$kickgame = new ExoKickgame();
 
-$kickgame->get_new_feed();
-*/
+//$kickgame->delete_old_feed();
+
+//$kickgame->get_new_feed();
+
 
 $affilinet = new ExoAffilinet();
 
@@ -172,7 +172,7 @@ foreach($exo_products as $product) {
     *
     * CJ SEARCHES
     *
-
+    */
     echo '<h3>CJ....</h3>';
 
     if(is_object($cj)){
@@ -208,7 +208,7 @@ foreach($exo_products as $product) {
       echo 'Couldnt search CJ since object was not created';
     }
 
-    */
+
     echo '<br><br>';
 
     if(sizeOf($result) != 0){
@@ -287,6 +287,7 @@ foreach($exo_products as $product) {
 }
 
 $main_time_now = new DateTime();
+update_option('mw_last_run', $main_time_now->getTimestamp());
 echo "##################END PROCESS################## /n";
 echo "##################".gmdate("Y-m-d H:i:s", $main_time_now->getTimestamp())."################## /n";
 
