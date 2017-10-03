@@ -24,7 +24,7 @@
   ?>
 </p>
 
-<a href="<?php echo AFFILIATE_LINK_FINDER_ROOT  . 'log.txt'; ?>">See log</a>
+<a href="<?php echo AFFILIATE_LINK_FINDER_ROOT_URL  . 'log.txt'; ?>">See log</a>
 
 <form method="post" action="">
   <input value="Run Now" type="submit" name='run_affiliate_link_finder' class="btn" />

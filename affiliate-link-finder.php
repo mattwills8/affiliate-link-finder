@@ -34,6 +34,7 @@ define( 'PLUGIN_VERSION', '1.0.0' );
 
 
 define( 'AFFILIATE_LINK_FINDER_ROOT', plugin_dir_path( __FILE__ ) );
+define( 'AFFILIATE_LINK_FINDER_ROOT_URL', plugin_dir_url( __FILE__ ) );
 
 /**
  * The code that runs during plugin activation.
