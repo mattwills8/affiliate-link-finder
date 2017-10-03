@@ -4,6 +4,10 @@ function mw_main($mw_echo=false) {
 
 ob_start();
 
+$main_time_now = new DateTime();
+echo "##################STARTING PROCESS################## /n";
+echo "##################".gmdate("Y-m-d H:i:s", $main_time_now->getTimestamp())."################## /n";
+
 set_time_limit(12000);
 ini_set('memory_limit', '20000M');
 ini_set('max_file_uploads', '200000');
@@ -58,13 +62,13 @@ $end->delete_old_feed();
 $end->get_new_feed();
 
 
-
+/*
 $kickgame = new ExoKickgame();
 
 $kickgame->delete_old_feed();
 
 $kickgame->get_new_feed();
-
+*/
 
 $affilinet = new ExoAffilinet();
 
@@ -137,7 +141,7 @@ foreach($exo_products as $product) {
     *
     * KICKGAME SEARCHES
     *
-    */
+
     echo '<h3>Kickgame....</h3>';
 
     $kickgame_result = $kickgame->get_products_by_sku($style_code);
@@ -168,7 +172,7 @@ foreach($exo_products as $product) {
     *
     * CJ SEARCHES
     *
-    */
+
     echo '<h3>CJ....</h3>';
 
     if(is_object($cj)){
@@ -204,6 +208,7 @@ foreach($exo_products as $product) {
       echo 'Couldnt search CJ since object was not created';
     }
 
+    */
     echo '<br><br>';
 
     if(sizeOf($result) != 0){
@@ -282,7 +287,9 @@ foreach($exo_products as $product) {
 }
 
 $main_time_now = new DateTime();
-echo '<p>Script run at: '.gmdate("Y-m-d H:i:s", $main_time_now->getTimestamp()).'</p>';
+echo "##################END PROCESS################## /n";
+echo "##################".gmdate("Y-m-d H:i:s", $main_time_now->getTimestamp())."################## /n";
+
 
 $buffer_size=ob_get_length();
 if ($size > 0)
