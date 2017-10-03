@@ -12,6 +12,19 @@
  * @subpackage Affiliate_Link_Finder/admin/partials
  */
 
+include_once AFFILIATE_LINK_FINDER_ROOT  . 'admin/partials/main.php';
+
+//SETUP CRON TASK
+add_action( 'mw_affiliate_link_finder_cron_hook', 'mw_main' );
+if ( ! wp_next_scheduled( 'mw_affiliate_link_finder_cron_hook' ) ) {
+   wp_schedule_event( time() + ( 2 * 60 ), 'twicedaily', 'mw_affiliate_link_finder_cron_hook' );
+}
+//unschedule next
+/*$timestamp = wp_next_scheduled( 'mw_affiliate_link_finder_cron_hook' );
+wp_unschedule_event( $timestamp, 'mw_affiliate_link_finder_cron_hook' );*/
+
+//see events
+//echo '<pre>'; print_r( _get_cron_array() ); echo '</pre>';
 ?>
 
 <h1>Afilliate Link Finder<h1>
@@ -35,8 +48,6 @@
 <?php
 
 if(isset($_POST['run_affiliate_link_finder'])){
-
-  include_once AFFILIATE_LINK_FINDER_ROOT  . 'admin/partials/main.php';
 
   if(mw_main($mw_echo = true) === true) {
     $time_now = new DateTime();

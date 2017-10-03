@@ -175,7 +175,7 @@ foreach($exo_products as $product) {
     *
     * CJ SEARCHES
     *
-    */
+
     echo '<h3>CJ....</h3>';
 
     if(is_object($cj)){
@@ -211,6 +211,8 @@ foreach($exo_products as $product) {
       echo 'Couldnt search CJ since object was not created';
     }
 
+    */
+    
     echo '<br><br>';
 
     if(sizeOf($result) != 0){
