@@ -1,6 +1,6 @@
 <?php
 
-function mw_main($mw_echo=false) {
+function mw_main() {
 
 ob_start();
 
@@ -212,7 +212,7 @@ foreach($exo_products as $product) {
     }
 
     */
-    
+
     echo '<br><br>';
 
     if(sizeOf($result) != 0){
@@ -306,11 +306,9 @@ if ($size > 0)
     ob_clean();
 }
 
-if($mw_echo === true){
 
-  echo '<h2>Script Log: </h2>';
-  echo $buffer_content;
-}
+echo '<h2>Script Log: </h2>';
+echo $buffer_content;
 
 return true;
 

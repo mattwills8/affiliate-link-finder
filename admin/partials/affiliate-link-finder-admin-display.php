@@ -17,7 +17,7 @@ include_once AFFILIATE_LINK_FINDER_ROOT  . 'admin/partials/main.php';
 //SETUP CRON TASK
 add_action( 'mw_affiliate_link_finder_cron_hook', 'mw_main' );
 if ( ! wp_next_scheduled( 'mw_affiliate_link_finder_cron_hook' ) ) {
-   wp_schedule_event( time() + ( 2 * 60 ), 'twicedaily', 'mw_affiliate_link_finder_cron_hook' );
+   wp_schedule_event( time(), 'twicedaily', 'mw_affiliate_link_finder_cron_hook' );
 }
 //unschedule next
 /*$timestamp = wp_next_scheduled( 'mw_affiliate_link_finder_cron_hook' );
@@ -49,7 +49,7 @@ wp_unschedule_event( $timestamp, 'mw_affiliate_link_finder_cron_hook' );*/
 
 if(isset($_POST['run_affiliate_link_finder'])){
 
-  if(mw_main($mw_echo = true) === true) {
+  if(mw_main() === true) {
     $time_now = new DateTime();
     update_option('mw_last_run', $time_now->getTimestamp());
   } else {
