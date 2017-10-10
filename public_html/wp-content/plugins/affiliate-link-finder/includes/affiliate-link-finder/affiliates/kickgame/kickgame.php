@@ -90,12 +90,6 @@ class ExoKickgame {
     public function get_new_feed() {
 
         exo_download_in_chunks($this->feed_url, $this->feed_path);
-
-        $this->get_downloaded_feed();
-    }
-
-    public function get_downloaded_feed() {
-
         $this->feed_xml = simplexml_load_file($this->feed_path, 'SimpleXMLElement', LIBXML_NOCDATA);
         if ($this->feed_xml === false) {
             echo "Failed loading XML: ";

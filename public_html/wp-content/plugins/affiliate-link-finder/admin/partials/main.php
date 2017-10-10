@@ -1,7 +1,14 @@
 <?php
 
-function get_webgains_feed() {
+set_time_limit(0); ini_set('memory_limit', '2048M');
 
+function get_feeds() {
+
+  require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/affilinet/affilinet.php';
+  require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/awin/awin.php';
+  require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/cj/cj.php';
+  require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/end/end.php';
+  require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/kickgame/kickgame.php';
   require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/webgains/webgains.php';
 
   $webgains = new ExoWebgains();
@@ -10,14 +17,6 @@ function get_webgains_feed() {
 
   $webgains->get_new_feed();
 
-}
-
-function get_end_feed() {
-
-  set_time_limit(0); ini_set('memory_limit', '2048M');
-
-  require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/end/end.php';
-
 
   $end = new ExoEnd();
 
@@ -25,13 +24,6 @@ function get_end_feed() {
 
   $end->get_new_feed();
 
-}
-
-function get_kickgame_feed() {
-
-  set_time_limit(0); ini_set('memory_limit', '2048M');
-
-  require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/kickgame/kickgame.php';
 
   $kickgame = new ExoKickgame();
 
@@ -39,13 +31,12 @@ function get_kickgame_feed() {
 
   $kickgame->get_new_feed();
 
+
 }
 
 
 
 function mw_main() {
-
-set_time_limit(0); ini_set('memory_limit', '2048M');
 
 ob_start();
 
@@ -86,6 +77,10 @@ $exo_products = get_posts( $exo_args );
 
 $webgains = new ExoWebgains();
 
+//$webgains->delete_old_feed();
+
+//$webgains->get_new_feed();
+
 $webgains->set_feed_path();
 
 $webgains_csv = $webgains->get_csv_object();
@@ -93,18 +88,26 @@ $webgains_csv = $webgains->get_csv_object();
 
 $end = new ExoEnd();
 
+//$end->delete_old_feed();
+
+//$end->get_new_feed();
+
 $end->get_downloaded_feed();
 
 
 
 $kickgame = new ExoKickgame();
 
+//$kickgame->delete_old_feed();
+
+//$kickgame->get_new_feed();
+
 $kickgame->get_downloaded_feed();
 
 
-$affilinet = new ExoAffilinet();
+//$affilinet = new ExoAffilinet();
 
-$cj = new ExoCJ();
+//$cj = new ExoCJ();*/
 
 
 foreach($exo_products as $product) {
@@ -188,7 +191,7 @@ foreach($exo_products as $product) {
     *
     * AFFILINET SEARCHES
     *
-    */
+
     echo '<h3>Afflinet....</h3>';
 
     if(is_object($affilinet)){
@@ -206,7 +209,7 @@ foreach($exo_products as $product) {
     *
     * CJ SEARCHES
     *
-    *
+
     echo '<h3>CJ....</h3>';
 
     if(is_object($cj)){
@@ -241,6 +244,7 @@ foreach($exo_products as $product) {
     } else {
       echo 'Couldnt search CJ since object was not created';
     }
+
     */
 
     echo '<br><br>';

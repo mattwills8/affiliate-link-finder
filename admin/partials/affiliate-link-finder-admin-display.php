@@ -40,12 +40,36 @@ wp_unschedule_event( $timestamp, 'mw_affiliate_link_finder_cron_hook' );*/
 <a href="<?php echo AFFILIATE_LINK_FINDER_ROOT_URL  . 'log.txt'; ?>">See log</a><br>
 
 <form method="post" action="">
+  <input value="Get Webgains Feed" type="submit" name='run_get_webgains_feed' class="btn" />
+</form>
+
+<form method="post" action="">
+  <input value="Get End Feed" type="submit" name='run_get_end_feed' class="btn" />
+</form>
+
+<form method="post" action="">
+  <input value="Get Kickgame Feed" type="submit" name='run_get_kickgame_feed' class="btn" />
+</form>
+
+<form method="post" action="">
   <input value="Run Now" type="submit" name='run_affiliate_link_finder' class="btn" />
 </form>
 
 <p>This could take a while if running manually... Go make yourself a cuppa'!</p>
 
 <?php
+
+if(isset($_POST['run_get_webgains_feed'])){
+  get_webgains_feed();
+}
+
+if(isset($_POST['run_get_end_feed'])){
+  get_end_feed();
+}
+
+if(isset($_POST['run_get_kickgame_feed'])){
+  get_kickgame_feed();
+}
 
 if(isset($_POST['run_affiliate_link_finder'])){
 

@@ -88,9 +88,8 @@ class ExoAffilinet {
 
             $response = $this->productsRequest->send();
         }
-        catch (Exception $e) {
-            echo 'Caught exception: ',  $e->getMessage(), "\n";
-            return;
+        catch (\Affilinet\ProductData\Exceptions\AffilinetProductWebserviceException $e) {
+            echo 'Error: ' . $e->getMessage();
         }
 
         echo 'Total results : ' . $response->totalRecords();
@@ -118,9 +117,8 @@ class ExoAffilinet {
 
             $response = $this->productsRequest->send();
         }
-        catch (Exception $e) {
-            echo 'Caught exception: ',  $e->getMessage(), "\n";
-            return;
+        catch (\Affilinet\ProductData\Exceptions\AffilinetProductWebserviceException $e) {
+            echo 'Error: ' . $e->getMessage();
         }
 
         //echo 'Total results : ' . $response->totalRecords();

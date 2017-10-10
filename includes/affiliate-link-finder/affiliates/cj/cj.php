@@ -40,7 +40,7 @@ class ExoCJ {
         $split_name = explode(" ",$name);
         $keywords = '';
         foreach($split_name as $word){
-            $keywords .= '+'.$word.' ';
+            $keywords .= ' '.$word.' ';
         }
 
         $match = $this->search_products('keywords', $keywords);
