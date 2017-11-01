@@ -1,54 +1,6 @@
 <?php
 
-function get_webgains_feed() {
-
-  require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/webgains/webgains.php';
-
-  $webgains = new ExoWebgains();
-
-  $webgains->delete_old_feed();
-
-  $webgains->get_new_feed();
-
-}
-
-function get_end_feed() {
-
-  set_time_limit(0); ini_set('memory_limit', '2048M');
-
-  require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/end/end.php';
-
-
-  $end = new ExoEnd();
-
-  $end->delete_old_feed();
-
-  $end->get_new_feed();
-
-}
-
-function get_kickgame_feed() {
-
-  set_time_limit(0); ini_set('memory_limit', '2048M');
-
-  ini_set('output_buffering', 0);
-  ini_set('implicit_flush', 1);
-  ob_end_flush();
-  ob_start();
-
-  require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/kickgame/kickgame.php';
-
-  $kickgame = new ExoKickgame();
-
-  $kickgame->delete_old_feed();
-
-  $kickgame->get_new_feed();
-
-}
-
-
-
-function mw_main() {
+function mw_kickgame_main() {
 
 set_time_limit(0); ini_set('memory_limit', '2048M');error_reporting(E_ALL);
 
@@ -58,7 +10,7 @@ ob_end_flush();
 ob_start();
 
 $main_time_now = new DateTime();
-echo "##################STARTING PROCESS################## <br>";
+echo "##################STARTING KICKGAME ONLY PROCESS################## <br>";
 echo "##################".gmdate("Y-m-d H:i:s", $main_time_now->getTimestamp())."################## <br>";
 
 require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/affilinet/affilinet.php';
@@ -92,26 +44,9 @@ $exo_products = get_posts( $exo_args );
 
 //get feeds
 
-$webgains = new ExoWebgains();
-
-$webgains->set_feed_path();
-
-$webgains_csv = $webgains->get_csv_object();
-
-
-$end = new ExoEnd();
-
-$end->get_downloaded_feed();
-
-/*
 $kickgame = new ExoKickgame();
 
 $kickgame->get_downloaded_feed();
-*/
-
-$affilinet = new ExoAffilinet();
-
-$cj = new ExoCJ();
 
 
 foreach($exo_products as $product) {
@@ -141,51 +76,11 @@ foreach($exo_products as $product) {
 
      ob_flush(); flush();
 
-
-    /*
-    *
-    * WEBGAINS SEARCHES
-    *
-    */
-    echo '<h3>Webgains....</h3>';
-
-    //nikeUK
-    $nike_result = $webgains->search_nike_uk($webgains_csv,$style_code);
-    if(!empty($nike_result)){
-        $result[] = $nike_result;
-    }
-
-
-    //slam jam
-    $slamjam_result = $webgains->search_slam_jam($webgains_csv,$style_code);
-    if(!empty($slamjam_result)){
-        $result[] = $slamjam_result;
-    }
-
-    //sneaker baas
-    $sneakerbaas_result = $webgains->search_sneaker_bass($webgains_csv,$style_code);
-    if(!empty($sneakerbaas_result)){
-        $result[] = $sneakerbaas_result;
-    }
-
-
-    /*
-    *
-    * END SEARCHES
-    *
-    */
-    echo '<h3>EndClothing....</h3>';
-
-    $endclothing_result = $end->get_products_by_sku($style_code);
-    if(!empty($endclothing_result)){
-        $result[] = $endclothing_result;
-    }
-
     /*
     *
     * KICKGAME SEARCHES
     *
-
+    */
     echo '<h3>Kickgame....</h3>';
 
     $kickgame_result = $kickgame->get_products_by_sku($style_code);
@@ -193,70 +88,9 @@ foreach($exo_products as $product) {
         $result[] = $kickgame_result;
     }
 
-
     /*
-    *
-    * AFFILINET SEARCHES
-    *
+    * PROCESS result
     */
-    echo '<h3>Afflinet....</h3>';
-
-    if(is_object($affilinet)){
-      //footlocker
-      $affilinet_result = $affilinet->search_foot_locker($name,$style_code);
-      if(!empty($afflinet_result)){
-          $result[] = $affilinet_result;
-      }
-    } else {
-      echo 'Couldnt search Affilinet since object was not created';
-    }
-
-
-    /*
-    *
-    * CJ SEARCHES
-    *
-    */
-    echo '<h3>CJ....</h3>';
-
-    if(is_object($cj)){
-      $cj_count = 0;
-
-      //sneakerstuff
-      $sneakerstuff_result = $cj->search_sneakers_n_stuff($style_code,$size);
-      $cj_count++;
-      if(!empty($sneakerstuff_result)){
-          $result[] = $sneakerstuff_result;
-      }
-
-      //caliroots
-      $caliroots_result = $cj->search_cali_roots($name,$style_code);
-      $cj_count++;
-      if(!empty($caliroots_result)){
-          $result[] = $caliroots_result;
-      }
-
-      //footshop.eu
-      $footshop_eu_result = $cj->search_footshop_eu($name,$style_code);
-      $cj_count++;
-      if(!empty($footshop_eu_result)){
-          $result[] = $footshop_eu_result;
-      }
-
-      //avoid rate limiting
-      if($cj_count == 24){
-
-          echo 'CJ needs to wait 60 seconds to avoid rate limiting...<br>';
-          ob_flush(); flush();
-          sleep(60);
-          $cj_count = 0;
-      }
-    } else {
-      echo 'Couldnt search CJ since object was not created';
-    }
-
-
-    echo '<br><br>';
 
     if(sizeOf($result) != 0){
 

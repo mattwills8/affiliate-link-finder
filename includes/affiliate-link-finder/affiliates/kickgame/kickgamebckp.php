@@ -11,8 +11,6 @@ class ExoKickgame {
     public $feed_dir;
     public $feed_xml;
     public $ns;
-    public $xmlReader;
-    public $DOMDocument;
 
     public function __construct() {
 
@@ -37,25 +35,14 @@ class ExoKickgame {
 
         $match = array();
 
-        // move to the first <entry /> node
-        while ($this->feed_xml->read() && $this->feed_xml->name !== 'entry');
-
-        // now that we're at the right depth, hop to the next <entry /> until the end of the tree
-        while ($this->feed_xml->name === 'entry')
-        {
-            // either one should work
-            $node = new SimpleXMLElement($this->feed_xml->readOuterXML());
-            $this->ns = $node->getNamespaces(true);
-
-            foreach($node->children($this->ns['g']) as $product_info){
+        foreach($this->feed_xml->item as $product){
+            foreach($product->children() as $product_info){
                 if($product_info->getName() === 'description') {
 
                     if(strpos($product_info->asXml(),$sku) !== false) {
 
-                        echo dom_import_simplexml($product_info)->nodeValue;
-
                         $stock = false;
-                        foreach($product->children($this->ns['g']) as $product_info_stock){
+                        foreach($product->children() as $product_info_stock){
                             if($product_info_stock->getName() === 'availability') {
 
                                 if(strpos($product_info_stock->asXml(),"In Stock") !== false) {
@@ -65,14 +52,14 @@ class ExoKickgame {
                         }
 
                         $link = '';
-                        foreach($product->children($this->ns['g']) as $product_info_2){
+                        foreach($product->children() as $product_info_2){
                             if($product_info_2->getName() === 'link') {
                                 $link = $product_info_2->asXml();
                             }
                         }
 
                         $price = '';
-                        foreach($product->children($this->ns['g']) as $product_info_3){
+                        foreach($product->children() as $product_info_3){
                             if($product_info_3->getName() === 'price') {
                                 $price = substr($product_info_3->asXml(),7,-8);
                             }
@@ -88,14 +75,9 @@ class ExoKickgame {
                     }
                 }
             }
-
-            //TODO: UNCOMMENT THIS. WE NEED TO JUST LOOP THROUGH THE XML ONCE, NOT FOR EVERY PRODUCT, MAYBE USING AN ARRAY OF SKU
-            // go to next <entry />
-            //$this->feed_xml->next('entry');
         }
-
         echo '<br>Found: '.sizeof($match).'<br>';
-        echo 'From: Footshop.eu<br><br>';
+        echo 'From Kickgame<br><br>';
 
         return $match;
     }
@@ -108,29 +90,28 @@ class ExoKickgame {
     public function get_new_feed() {
 
         exo_download_in_chunks($this->feed_url, $this->feed_path);
-
-        $this->get_downloaded_feed();
-    }
-
-    public function get_downloaded_feed() {
-
-        $this->create_xmlReader();
-
-        $this->feed_xml->open($this->feed_path);
-
+        $this->feed_xml = simplexml_load_file($this->feed_path, 'SimpleXMLElement', LIBXML_NOCDATA);
         if ($this->feed_xml === false) {
-            echo "Failed loading XML";
+            echo "Failed loading XML: ";
+            foreach(libxml_get_errors() as $error) {
+                echo "<br>", $error->message;
+            }
+        } else {
+            $this->ns = $this->feed_xml->getNamespaces(true);
         }
     }
 
-    public function create_xmlReader() {
-
-      $this->feed_xml= new XMLReader;
-    }
-
-    public function create_DOMDocument() {
-
-      $this->DOMDocument = new DOMDocument;
+    public function get_downloaded_feed() {
+      
+        $this->feed_xml = simplexml_load_file($this->feed_path, 'SimpleXMLElement', LIBXML_NOCDATA);
+        if ($this->feed_xml === false) {
+            echo "Failed loading XML: ";
+            foreach(libxml_get_errors() as $error) {
+                echo "<br>", $error->message;
+            }
+        } else {
+            $this->ns = $this->feed_xml->getNamespaces(true);
+        }
     }
 }
 

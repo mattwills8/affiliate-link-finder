@@ -101,7 +101,16 @@ class ExoEnd {
         exo_download_in_chunks($this->feed_url, $this->feed_path);
         //$feed = file_get_contents($this->feed_path);
 
-        $this->get_downloaded_feed();
+        $this->feed_xml = simplexml_load_file($this->feed_path, 'SimpleXMLElement', LIBXML_PARSEHUGE);
+        if ($this->feed_xml === false) {
+            echo "Failed loading XML: ";
+            foreach(libxml_get_errors() as $error) {
+                echo "<br>", $error->message;
+            }
+        } else {
+            $this->ns = $this->feed_xml->getNamespaces(true);
+            // rememeber children($ns['g'])
+        }
     }
 
     public function get_downloaded_feed(){
