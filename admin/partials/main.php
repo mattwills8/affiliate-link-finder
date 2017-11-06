@@ -94,6 +94,7 @@ $retailers_id_list = [
   'Bstnstore.com'         =>  322,
   'OVERKILL'              =>  323,
   'Sneakerworldshop.com'  =>  324,
+  'afew-store'            =>  38,
 ];
 
 //get woocommerce products
@@ -214,6 +215,12 @@ foreach($exo_products as $product) {
     $sneaker_world_result = $webgains_de->search_sneaker_world($webgains_de_csv,$style_code);
     if(!empty($sneaker_world_result)){
         $result[] = $sneaker_world_result;
+    }
+
+    //afew store
+    $afew_result = $webgains_de->search_afew($webgains_de_csv,$style_code);
+    if(!empty($afew_result)){
+        $result[] = $afew_result;
     }
 
 
