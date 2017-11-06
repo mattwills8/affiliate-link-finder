@@ -116,6 +116,8 @@ $retailers_id_list = [
   'Office Shoes'          =>  173,
   'Offspring'             =>  317,
   '18montrose'            =>  329,
+  'KongOnline.co.uk'      =>  330,
+
 ];
 
 //get woocommerce products
@@ -235,9 +237,15 @@ foreach($exo_products as $product) {
     }
 
     //18Montrse
-    $montrse_result = $webgains->search_18montrse($webgains_csv,$style_code);
+    $montrse_result = $webgains->search_18montrse($webgains_csv,$name);
     if(!empty($montrse_result)){
         $result[] = $montrse_result;
+    }
+
+    // kong online
+    $kong_online_result = $webgains->search_kong_online($webgains_csv,$name);
+    if(!empty($kong_online_result)){
+        $result[] = $kong_online_result;
     }
 
 

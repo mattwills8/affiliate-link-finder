@@ -183,6 +183,10 @@ class ExoWebgains {
         if($match){
             foreach($match as $matched_row) {
 
+                if( $matched_row[$retailer_row] != '18montrose' ) {
+                  continue;
+                }
+
                 $stock = false;
                 if($matched_row[$stock_row] == 1){
                     $stock = true;
@@ -209,6 +213,62 @@ class ExoWebgains {
 
         echo '<br>Found: '.sizeof($final_match).'<br>';
         echo 'From: 18Montrse<br><br>';
+
+        return $final_match;
+    }
+
+    public function search_kong_online($webgains_csv, $name) {
+
+        if(!is_object($webgains_csv)){
+            echo 'Couldnt load csv...<br>';
+            return;
+        }
+
+        $match = array();
+        $final_match = array();
+
+        $keywords = $this->split_name_into_keywords( $name );
+
+        $retailer_row = $webgains_csv->get_column_id('program_name');
+        $deeplink_row = $webgains_csv->get_column_id('deeplink');
+        $price_row = $webgains_csv->get_column_id('price');
+        $stock_row = $webgains_csv->get_column_id('in_stock');
+
+
+        $match = $webgains_csv->filter_rows_by_keywords('product_name',$keywords);
+        if($match){
+            foreach($match as $matched_row) {
+
+                if( $matched_row[$retailer_row] != 'KongOnline.co.uk' ) {
+                  continue;
+                }
+
+                $stock = false;
+                if($matched_row[$stock_row] == 1){
+                    $stock = true;
+                }
+
+                // stop it from getting two matches from one retailer
+                if( ! empty($final_match) ) {
+                  foreach ($final_match as $already_matched) {
+                    if( $already_matched['retailer'] == $matched_row[$retailer_row] ) {
+                      continue 2;
+                    }
+                  }
+                }
+
+                array_push($final_match, array(
+                    'retailer'      => $matched_row[$retailer_row],
+                    'deeplink'      => $matched_row[$deeplink_row],
+                    'in_stock'      => $stock,
+                    'price'         => $matched_row[$price_row],
+                    'sale-price'    => ''
+                ));
+            }
+        }
+
+        echo '<br>Found: '.sizeof($final_match).'<br>';
+        echo 'From: Kong Online<br><br>';
 
         return $final_match;
     }
