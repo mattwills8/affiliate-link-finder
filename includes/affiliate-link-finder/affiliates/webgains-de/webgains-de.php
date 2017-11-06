@@ -39,23 +39,28 @@ class ExoWebgainsDE {
         $match = array();
         $final_match = array();
 
+        $retailer_row = $webgains_csv->get_column_id('program_name');
+        $deeplink_row = $webgains_csv->get_column_id('deeplink');
+        $price_row = $webgains_csv->get_column_id('price');
+        $stock_row = $webgains_csv->get_column_id('in_stock');
+
         $match = $webgains_csv->filter_rows_by_col_value('manufacturers_product_number',$style_code);
 
         if($match){
             foreach($match as $matched_row) {
 
-                if( $matched_row[11] == 'Bstnstore.com' ) {
+                if( $matched_row[$retailer_row] == 'Bstnstore.com' ) {
 
                   $stock = false;
-                  if($matched_row[14] == 'ja'){
+                  if($matched_row[$stock_row] == 'ja'){
                       $stock = true;
                   }
 
                   array_push($final_match, array(
-                      'retailer'      => $matched_row[11],
-                      'deeplink'      => $matched_row[2],
+                      'retailer'      => $matched_row[$retailer_row],
+                      'deeplink'      => $matched_row[$deeplink_row],
                       'in_stock'      => $stock,
-                      'price'         => $matched_row[7],
+                      'price'         => $matched_row[$price_row],
                       'sale-price'    => ''
                   ));
 
@@ -83,23 +88,28 @@ class ExoWebgainsDE {
         $match = array();
         $final_match = array();
 
+        $retailer_row = $webgains_csv->get_column_id('program_name');
+        $deeplink_row = $webgains_csv->get_column_id('deeplink');
+        $price_row = $webgains_csv->get_column_id('price');
+        $stock_row = $webgains_csv->get_column_id('in_stock');
+
         $match = $webgains_csv->filter_rows_by_col_value_contains('manufacturers_product_number',$style_code);
 
         if($match){
             foreach($match as $matched_row) {
 
-                if( $matched_row[11] == 'OVERKILL' ) {
+                if( $matched_row[$retailer_row] == 'OVERKILL' ) {
 
                   $stock = false;
-                  if($matched_row[14] == 'ja'){
+                  if($matched_row[$stock_row] == 'ja'){
                       $stock = true;
                   }
 
                   array_push($final_match, array(
-                      'retailer'      => $matched_row[11],
-                      'deeplink'      => $matched_row[2],
+                      'retailer'      => $matched_row[$retailer_row],
+                      'deeplink'      => $matched_row[$deeplink_row],
                       'in_stock'      => $stock,
-                      'price'         => $matched_row[7],
+                      'price'         => $matched_row[$price_row],
                       'sale-price'    => ''
                   ));
 
@@ -124,23 +134,28 @@ class ExoWebgainsDE {
         $match = array();
         $final_match = array();
 
+        $retailer_row = $webgains_csv->get_column_id('program_name');
+        $deeplink_row = $webgains_csv->get_column_id('deeplink');
+        $price_row = $webgains_csv->get_column_id('price');
+        $stock_row = $webgains_csv->get_column_id('in_stock');
+
         $match = $webgains_csv->filter_rows_by_col_value('manufacturers_product_number',$style_code);
 
         if($match){
             foreach($match as $matched_row) {
 
-                if( $matched_row[11] == 'Sneakerworldshop.com' ) {
+                if( $matched_row[$retailer_row] == 'Sneakerworldshop.com' ) {
 
                   $stock = false;
-                  if($matched_row[14] == 'Erhaeltlich'){
+                  if($matched_row[$stock_row] == 'Erhaeltlich'){
                       $stock = true;
                   }
 
                   array_push($final_match, array(
-                      'retailer'      => $matched_row[11],
-                      'deeplink'      => $matched_row[2],
+                      'retailer'      => $matched_row[$retailer_row],
+                      'deeplink'      => $matched_row[$deeplink_row],
                       'in_stock'      => $stock,
-                      'price'         => $matched_row[7],
+                      'price'         => $matched_row[$price_row],
                       'sale-price'    => ''
                   ));
 
@@ -168,23 +183,28 @@ class ExoWebgainsDE {
         $match = array();
         $final_match = array();
 
+        $retailer_row = $webgains_csv->get_column_id('program_name');
+        $deeplink_row = $webgains_csv->get_column_id('deeplink');
+        $price_row = $webgains_csv->get_column_id('price');
+        $stock_row = $webgains_csv->get_column_id('in_stock');
+
         $match = $webgains_csv->filter_rows_by_col_value('manufacturers_product_number',$style_code);
 
         if($match){
             foreach($match as $matched_row) {
 
-                if( $matched_row[11] == 'afew-store' ) {
+                if( $matched_row[$retailer_row] == 'afew-store' ) {
 
                   $stock = false;
-                  if($matched_row[14] == 'Ja'){
+                  if($matched_row[$stock_row] == 'Ja'){
                       $stock = true;
                   }
 
                   array_push($final_match, array(
-                      'retailer'      => $matched_row[11],
-                      'deeplink'      => $matched_row[2],
+                      'retailer'      => $matched_row[$retailer_row],
+                      'deeplink'      => $matched_row[$deeplink_row],
                       'in_stock'      => $stock,
-                      'price'         => $matched_row[7],
+                      'price'         => $matched_row[$price_row],
                       'sale-price'    => ''
                   ));
 
@@ -212,18 +232,23 @@ class ExoWebgainsDE {
         $match = array();
         $final_match = array();
 
+        $retailer_row = $webgains_csv->get_column_id('program_name');
+        $deeplink_row = $webgains_csv->get_column_id('deeplink');
+        $price_row = $webgains_csv->get_column_id('price');
+        $stock_row = $webgains_csv->get_column_id('in_stock');
+
         $match = $webgains_csv->filter_rows_by_col_value('product_id',$style_code);
 
         if($match){
             foreach($match as $matched_row) {
 
-                if( $matched_row[11] == 'Allike' ) {
+                if( $matched_row[$retailer_row] == 'Allike' ) {
 
                   array_push($final_match, array(
-                      'retailer'      => $matched_row[11],
-                      'deeplink'      => $matched_row[2],
+                      'retailer'      => $matched_row[$retailer_row],
+                      'deeplink'      => $matched_row[$deeplink_row],
                       'in_stock'      => true,
-                      'price'         => $matched_row[7],
+                      'price'         => $matched_row[$price_row],
                       'sale-price'    => ''
                   ));
 
@@ -249,6 +274,11 @@ class ExoWebgainsDE {
         $match = array();
         $final_match = array();
 
+        $retailer_row = $webgains_csv->get_column_id('program_name');
+        $deeplink_row = $webgains_csv->get_column_id('deeplink');
+        $price_row = $webgains_csv->get_column_id('price');
+        $stock_row = $webgains_csv->get_column_id('in_stock');
+
         $style_code_split = $this->split_style_code($style_code);
 
         $style_code_1 = $style_code_split[0];
@@ -260,13 +290,13 @@ class ExoWebgainsDE {
         if($match){
             foreach($match as $matched_row) {
 
-              if( $matched_row[11] == 'sneakerstudio.de' ) {
+              if( $matched_row[$retailer_row] == 'sneakerstudio.de' ) {
 
                 array_push($final_match, array(
-                    'retailer'      => $matched_row[11],
-                    'deeplink'      => $matched_row[2],
+                    'retailer'      => $matched_row[$retailer_row],
+                    'deeplink'      => $matched_row[$deeplink_row],
                     'in_stock'      => true,
-                    'price'         => $matched_row[7],
+                    'price'         => $matched_row[$price_row],
                     'sale-price'    => ''
                 ));
               }

@@ -39,6 +39,13 @@ class ExoWebgains {
         $match = array();
         $final_match = array();
 
+        $stock_row = $webgains_csv->get_column_id('in_stock');
+        $retailer_row = $webgains_csv->get_column_id('program_name');
+        $deeplink_row = $webgains_csv->get_column_id('deeplink');
+        $price_row = $webgains_csv->get_column_id('price');
+        $img_url_row = $webgains_csv->get_column_id('image_url');
+
+
         $style_code_split = $this->split_style_code($style_code);
 
         $style_code_1 = $style_code_split[0];
@@ -48,18 +55,18 @@ class ExoWebgains {
         if($match){
             foreach($match as $matched_row) {
 
-                if(strpos($matched_row[5],$style_code_1.'_'.$style_code_2) !== false) {
+                if(strpos($matched_row[$img_url_row],$style_code_1.'_'.$style_code_2) !== false) {
 
                     $stock = false;
-                    if($matched_row[32]){
+                    if($matched_row[$stock_row]){
                         $stock = true;
                     }
 
                     array_push($final_match, array(
-                        'retailer'      => $matched_row[12],
-                        'deeplink'      => $matched_row[3],
+                        'retailer'      => $matched_row[$retailer_row],
+                        'deeplink'      => $matched_row[$deeplink_row],
                         'in_stock'      => $stock,
-                        'price'         => $matched_row[8],
+                        'price'         => $matched_row[$price_row],
                         'sale-price'    => ''
                     ));
                 }
@@ -82,6 +89,11 @@ class ExoWebgains {
         $match = array();
         $final_match = array();
 
+        $retailer_row = $webgains_csv->get_column_id('program_name');
+        $deeplink_row = $webgains_csv->get_column_id('deeplink');
+        $price_row = $webgains_csv->get_column_id('price');
+        $description_row = $webgains_csv->get_column_id('description');
+
         $style_code_split = $this->split_style_code($style_code);
 
         $style_code_1 = $style_code_split[0];
@@ -91,15 +103,15 @@ class ExoWebgains {
         if($match){
             foreach($match as $matched_row) {
 
-                if(strpos($matched_row[4],$style_code_2) !== false) {
+                if(strpos($matched_row[$description_row],$style_code_2) !== false) {
 
                     $stock = true;
 
                     array_push($final_match, array(
-                        'retailer'      => $matched_row[12],
-                        'deeplink'      => $matched_row[3],
+                        'retailer'      => $matched_row[$retailer_row],
+                        'deeplink'      => $matched_row[$deeplink_row],
                         'in_stock'      => $stock,
-                        'price'         => $matched_row[8],
+                        'price'         => $matched_row[$price_row],
                         'sale-price'    => ''
                     ));
                 }
@@ -123,6 +135,10 @@ class ExoWebgains {
         $match = array();
         $final_match = array();
 
+        $retailer_row = $webgains_csv->get_column_id('program_name');
+        $deeplink_row = $webgains_csv->get_column_id('deeplink');
+        $price_row = $webgains_csv->get_column_id('price');
+
         $match = $webgains_csv->filter_rows_by_col_value('product_id','SB-'.$style_code);
         if($match){
             foreach($match as $matched_row) {
@@ -130,10 +146,10 @@ class ExoWebgains {
                 $stock = true;
 
                 array_push($final_match, array(
-                    'retailer'      => $matched_row[12],
-                    'deeplink'      => $matched_row[3],
+                    'retailer'      => $matched_row[$retailer_row],
+                    'deeplink'      => $matched_row[$deeplink_row],
                     'in_stock'      => $stock,
-                    'price'         => $matched_row[8],
+                    'price'         => $matched_row[$price_row],
                     'sale-price'    => ''
                 ));
             }

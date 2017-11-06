@@ -400,6 +400,9 @@ foreach($exo_products as $product) {
         }
       }
 
+      echo '<strong>'.sizeof($result).'</strong>';
+      echo ' Retailers Matched<br><br>';
+
       var_dump($result);
       echo '<br><br>';
       //creating string to input into retailer field
