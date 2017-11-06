@@ -161,6 +161,48 @@ class ExoWebgains {
         return $final_match;
     }
 
+    public function search_aphrodite($webgains_csv, $style_code) {
+
+        if(!is_object($webgains_csv)){
+            echo 'Couldnt load csv...<br>';
+            return;
+        }
+
+        $match = array();
+        $final_match = array();
+
+        $retailer_row = $webgains_csv->get_column_id('program_name');
+        $deeplink_row = $webgains_csv->get_column_id('deeplink');
+        $price_row = $webgains_csv->get_column_id('price');
+        $description_row = $webgains_csv->get_column_id('description');
+
+        $match = $webgains_csv->filter_rows_by_col_value_contains('description',$style_code);
+        if($match){
+            foreach($match as $matched_row) {
+
+              if( $matched_row[$retailer_row] != 'Aphrodite' ) {
+                continue;
+              }
+
+              $stock = true;
+
+              array_push($final_match, array(
+                  'retailer'      => $matched_row[$retailer_row],
+                  'deeplink'      => $matched_row[$deeplink_row],
+                  'in_stock'      => $stock,
+                  'price'         => $matched_row[$price_row],
+                  'sale-price'    => ''
+              ));
+            }
+        }
+
+        echo '<br>Found: '.sizeof($final_match).'<br>';
+        echo 'From: Aphrodite<br><br>';
+
+        return $final_match;
+
+    }
+
     public function search_18montrse($webgains_csv, $name) {
 
         if(!is_object($webgains_csv)){
@@ -334,11 +376,5 @@ class ExoWebgains {
 }
 
 }
-
-/*
-$matching_rows = $webgains_feed->filter_rows_by_col_value('product_id','29311067199');
-print_r($webgains_feed->get_product_links('deeplink',$matching_rows)[0]);
-*/
-
 
 ?>

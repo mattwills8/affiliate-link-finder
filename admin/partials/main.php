@@ -117,7 +117,7 @@ $retailers_id_list = [
   'Offspring'             =>  317,
   '18montrose'            =>  329,
   'KongOnline.co.uk'      =>  330,
-
+  'Aphrodite'             =>  331,
 ];
 
 //get woocommerce products
@@ -234,6 +234,12 @@ foreach($exo_products as $product) {
     $sneakerbaas_result = $webgains->search_sneaker_bass($webgains_csv,$style_code);
     if(!empty($sneakerbaas_result)){
         $result[] = $sneakerbaas_result;
+    }
+
+    // aphrodite
+    $aphrodite_result = $webgains->search_aphrodite($webgains_csv,$style_code);
+    if(!empty($aphrodite_result)){
+        $result[] = $aphrodite_result;
     }
 
     //18Montrse
