@@ -96,6 +96,7 @@ $retailers_id_list = [
   'Sneakerworldshop.com'  =>  324,
   'afew-store'            =>  38,
   'sneakerstudio.de'      =>  325,
+  'Allike'                 =>  52,
 ];
 
 //get woocommerce products
@@ -222,6 +223,12 @@ foreach($exo_products as $product) {
     $afew_result = $webgains_de->search_afew($webgains_de_csv,$style_code);
     if(!empty($afew_result)){
         $result[] = $afew_result;
+    }
+
+    //allike store
+    $allike_result = $webgains_de->search_allike($webgains_de_csv,$style_code);
+    if(!empty($allike_result)){
+        $result[] = $allike_result;
     }
 
     // sneaker studio
