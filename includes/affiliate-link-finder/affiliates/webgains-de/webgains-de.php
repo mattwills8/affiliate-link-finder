@@ -59,6 +59,9 @@ class ExoWebgainsDE {
                       'sale-price'    => ''
                   ));
 
+                  break;
+                  // here we were getting around 30, one for each size. Can remove this break to get them all
+
                 }
             }
         }
