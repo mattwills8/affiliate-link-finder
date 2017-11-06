@@ -95,6 +95,7 @@ $retailers_id_list = [
   'OVERKILL'              =>  323,
   'Sneakerworldshop.com'  =>  324,
   'afew-store'            =>  38,
+  'sneakerstudio.de'      =>  325,
 ];
 
 //get woocommerce products
@@ -221,6 +222,12 @@ foreach($exo_products as $product) {
     $afew_result = $webgains_de->search_afew($webgains_de_csv,$style_code);
     if(!empty($afew_result)){
         $result[] = $afew_result;
+    }
+
+    // sneaker studio
+    $sneaker_studio_result = $webgains_de->search_sneaker_studio($webgains_de_csv,$style_code);
+    if(!empty($sneaker_studio_result)){
+        $result[] = $sneaker_studio_result;
     }
 
 
