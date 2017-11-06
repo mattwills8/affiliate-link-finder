@@ -115,6 +115,7 @@ $retailers_id_list = [
   'Hipstore'              =>  328,
   'Office Shoes'          =>  173,
   'Offspring'             =>  317,
+  '18montrose'            =>  329,
 ];
 
 //get woocommerce products
@@ -231,6 +232,12 @@ foreach($exo_products as $product) {
     $sneakerbaas_result = $webgains->search_sneaker_bass($webgains_csv,$style_code);
     if(!empty($sneakerbaas_result)){
         $result[] = $sneakerbaas_result;
+    }
+
+    //18Montrse
+    $montrse_result = $webgains->search_18montrse($webgains_csv,$style_code);
+    if(!empty($montrse_result)){
+        $result[] = $montrse_result;
     }
 
 
