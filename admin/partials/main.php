@@ -82,16 +82,17 @@ require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affil
 require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/webgains-de/webgains-de.php';
 
 $retailers_id_list = [
-  'Foot Locker'   =>  158,
-  'Footshop.eu'   =>  314,
-  'Caliroots'   =>  50,
-  'SneakersnStuff'   =>  42,
-  'End Clothing'   =>  49,
-  'Kickgame'   =>  315,
-  'slam jam socialism'   =>  41,
-  'Sneaker Baas UK'   =>  316,
-  'NIKE UK'   =>  53,
-  'Bstnstore.com'      =>  322,
+  'Foot Locker'           =>  158,
+  'Footshop.eu'           =>  314,
+  'Caliroots'             =>  50,
+  'SneakersnStuff'        =>  42,
+  'End Clothing'          =>  49,
+  'Kickgame'              =>  315,
+  'slam jam socialism'    =>  41,
+  'Sneaker Baas UK'       =>  316,
+  'NIKE UK'               =>  53,
+  'Bstnstore.com'         =>  322,
+  'OVERKILL'              => 323,
 ];
 
 //get woocommerce products
@@ -196,10 +197,16 @@ foreach($exo_products as $product) {
     */
     echo '<h3>Webgains DE....</h3>';
 
-    //nikeUK
+    //bstn
     $bstn_result = $webgains_de->search_bstn($webgains_de_csv,$style_code);
     if(!empty($bstn_result)){
-        $result[] = $bstn_result[0];
+        $result[] = $bstn_result;
+    }
+
+    //overkill
+    $overkill_result = $webgains_de->search_overkill($webgains_de_csv,$style_code);
+    if(!empty($overkill_result)){
+        $result[] = $overkill_result;
     }
 
 

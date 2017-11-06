@@ -72,6 +72,48 @@ class ExoWebgainsDE {
         return $final_match;
     }
 
+
+    public function search_overkill($webgains_csv, $style_code) {
+
+        if(!is_object($webgains_csv)){
+            echo 'Couldnt load csv...<br>';
+            return;
+        }
+
+        $match = array();
+        $final_match = array();
+
+        $match = $webgains_csv->filter_rows_by_col_value_contains('manufacturers_product_number',$style_code);
+
+        if($match){
+            foreach($match as $matched_row) {
+
+                if( $matched_row[11] == 'OVERKILL' ) {
+
+                  $stock = false;
+                  if($matched_row[14] == 'ja'){
+                      $stock = true;
+                  }
+
+                  array_push($final_match, array(
+                      'retailer'      => $matched_row[11],
+                      'deeplink'      => $matched_row[2],
+                      'in_stock'      => $stock,
+                      'price'         => $matched_row[7],
+                      'sale-price'    => ''
+                  ));
+
+                }
+            }
+        }
+
+        echo '<br>Found: '.sizeof($final_match).'<br>';
+        echo 'From: OVERKILL<br><br>';
+
+        return $final_match;
+    }
+
+
     public function search_slam_jam($webgains_csv, $style_code) {
 
         if(!is_object($webgains_csv)){
