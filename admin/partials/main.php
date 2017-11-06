@@ -118,6 +118,7 @@ $retailers_id_list = [
   '18montrose'            =>  329,
   'KongOnline.co.uk'      =>  330,
   'Aphrodite'             =>  331,
+  'Life Style Sports'     =>  332,
 ];
 
 //get woocommerce products
@@ -164,7 +165,7 @@ $kickgame->get_downloaded_feed();
 
 $affilinet = new ExoAffilinet();
 
-//$cj = new ExoCJ();
+$cj = new ExoCJ();
 
 
 foreach($exo_products as $product) {
@@ -252,6 +253,12 @@ foreach($exo_products as $product) {
     $kong_online_result = $webgains->search_kong_online($webgains_csv,$name);
     if(!empty($kong_online_result)){
         $result[] = $kong_online_result;
+    }
+
+    // lifestyle sports
+    $lifestyle_sports_result = $webgains->search_lifestyle_sports($webgains_csv,$name);
+    if(!empty($lifestyle_sports_result)){
+        $result[] = $lifestyle_sports_result;
     }
 
 
@@ -346,7 +353,7 @@ foreach($exo_products as $product) {
     *
     * CJ SEARCHES
     *
-
+    */
     echo '<h3>CJ....</h3>';
 
     if(is_object($cj)){
@@ -385,7 +392,7 @@ foreach($exo_products as $product) {
       echo 'Couldnt search CJ since object was not created';
     }
 
-    */
+
 
 
     echo '<br><br>';
