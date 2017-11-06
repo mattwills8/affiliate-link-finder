@@ -12,6 +12,18 @@ function get_webgains_feed() {
 
 }
 
+function get_webgains_de_feed() {
+
+  require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/webgains-de/webgains-de.php';
+
+  $webgains_de = new ExoWebgainsDE();
+
+  $webgains_de->delete_old_feed();
+
+  $webgains_de->get_new_feed();
+
+}
+
 function get_end_feed() {
 
   set_time_limit(0); ini_set('memory_limit', '2048M');
@@ -67,6 +79,7 @@ require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affil
 require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/end/end.php';
 require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/kickgame/kickgame.php';
 require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/webgains/webgains.php';
+require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/webgains-de/webgains-de.php';
 
 $retailers_id_list = [
   'Foot Locker'   =>  158,
@@ -78,7 +91,7 @@ $retailers_id_list = [
   'slam jam socialism'   =>  41,
   'Sneaker Baas UK'   =>  316,
   'NIKE UK'   =>  53,
-
+  'Bstnstore.com'      =>  322,
 ];
 
 //get woocommerce products
@@ -99,6 +112,13 @@ $webgains->set_feed_path();
 $webgains_csv = $webgains->get_csv_object();
 
 
+$webgains_de = new ExoWebgainsDE();
+
+$webgains_de->set_feed_path();
+
+$webgains_de_csv = $webgains_de->get_csv_object();
+
+
 $end = new ExoEnd();
 
 $end->get_downloaded_feed();
@@ -111,7 +131,7 @@ $kickgame->get_downloaded_feed();
 
 $affilinet = new ExoAffilinet();
 
-$cj = new ExoCJ();
+//$cj = new ExoCJ();
 
 
 foreach($exo_products as $product) {
@@ -171,6 +191,20 @@ foreach($exo_products as $product) {
 
     /*
     *
+    * WEBGAINS DE SEARCHES
+    *
+    */
+    echo '<h3>Webgains DE....</h3>';
+
+    //nikeUK
+    $bstn_result = $webgains_de->search_bstn($webgains_de_csv,$style_code);
+    if(!empty($bstn_result)){
+        $result[] = $bstn_result[0];
+    }
+
+
+    /*
+    *
     * END SEARCHES
     *
     */
@@ -216,7 +250,7 @@ foreach($exo_products as $product) {
     *
     * CJ SEARCHES
     *
-    */
+
     echo '<h3>CJ....</h3>';
 
     if(is_object($cj)){
@@ -254,6 +288,8 @@ foreach($exo_products as $product) {
     } else {
       echo 'Couldnt search CJ since object was not created';
     }
+
+    */
 
 
     echo '<br><br>';

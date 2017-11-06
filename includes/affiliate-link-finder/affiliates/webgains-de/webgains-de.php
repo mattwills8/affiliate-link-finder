@@ -39,23 +39,27 @@ class ExoWebgainsDE {
         $match = array();
         $final_match = array();
 
-        $match = $webgains_csv->filter_rows_by_col_value_contains('manufacturers_product_number',$style_code);
+        $match = $webgains_csv->filter_rows_by_col_value('manufacturers_product_number',$style_code);
 
         if($match){
             foreach($match as $matched_row) {
 
-                $stock = false;
-                if($matched_row[14] == 'ja'){
-                    $stock = true;
-                }
+                if( $matched_row[11] == 'Bstnstore.com' ) {
 
-                array_push($final_match, array(
-                    'retailer'      => $matched_row[11],
-                    'deeplink'      => $matched_row[2],
-                    'in_stock'      => $stock,
-                    'price'         => $matched_row[7],
-                    'sale-price'    => ''
-                ));
+                  $stock = false;
+                  if($matched_row[14] == 'ja'){
+                      $stock = true;
+                  }
+
+                  array_push($final_match, array(
+                      'retailer'      => $matched_row[11],
+                      'deeplink'      => $matched_row[2],
+                      'in_stock'      => $stock,
+                      'price'         => $matched_row[7],
+                      'sale-price'    => ''
+                  ));
+
+                }
             }
         }
 

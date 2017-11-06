@@ -51,6 +51,15 @@ wp_unschedule_event( $timestamp, 'mw_affiliate_link_finder_cron_hook' );*/
 
 
 <form method="post" action="">
+  <input value="Get Webgains DE Feed" type="submit" name='run_get_webgains_de_feed' class="btn" />
+</form>
+
+<?php if(isset($_POST['run_get_webgains_de_feed'])){
+  get_webgains_de_feed();
+} ?>
+
+
+<form method="post" action="">
   <input value="Get End Feed" type="submit" name='run_get_end_feed' class="btn" />
 </form>
 
