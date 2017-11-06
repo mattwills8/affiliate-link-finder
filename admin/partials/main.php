@@ -92,7 +92,8 @@ $retailers_id_list = [
   'Sneaker Baas UK'       =>  316,
   'NIKE UK'               =>  53,
   'Bstnstore.com'         =>  322,
-  'OVERKILL'              => 323,
+  'OVERKILL'              =>  323,
+  'Sneakerworldshop.com'  =>  324,
 ];
 
 //get woocommerce products
@@ -207,6 +208,12 @@ foreach($exo_products as $product) {
     $overkill_result = $webgains_de->search_overkill($webgains_de_csv,$style_code);
     if(!empty($overkill_result)){
         $result[] = $overkill_result;
+    }
+
+    //sneaker world
+    $sneaker_world_result = $webgains_de->search_sneaker_world($webgains_de_csv,$style_code);
+    if(!empty($sneaker_world_result)){
+        $result[] = $sneaker_world_result;
     }
 
 

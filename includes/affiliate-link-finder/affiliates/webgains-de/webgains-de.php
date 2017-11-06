@@ -114,6 +114,50 @@ class ExoWebgainsDE {
     }
 
 
+    public function search_sneaker_world($webgains_csv, $style_code) {
+
+        if(!is_object($webgains_csv)){
+            echo 'Couldnt load csv...<br>';
+            return;
+        }
+
+        $match = array();
+        $final_match = array();
+
+        $match = $webgains_csv->filter_rows_by_col_value('manufacturers_product_number',$style_code);
+
+        if($match){
+            foreach($match as $matched_row) {
+
+                if( $matched_row[11] == 'Sneakerworldshop.com' ) {
+
+                  $stock = false;
+                  if($matched_row[14] == 'Erhaeltlich'){
+                      $stock = true;
+                  }
+
+                  array_push($final_match, array(
+                      'retailer'      => $matched_row[11],
+                      'deeplink'      => $matched_row[2],
+                      'in_stock'      => $stock,
+                      'price'         => $matched_row[7],
+                      'sale-price'    => ''
+                  ));
+
+                  break;
+                  // here we were getting around 30, one for each size. Can remove this break to get them all
+
+                }
+            }
+        }
+
+        echo '<br>Found: '.sizeof($final_match).'<br>';
+        echo 'From: Sneaker World<br><br>';
+
+        return $final_match;
+    }
+
+
     public function search_slam_jam($webgains_csv, $style_code) {
 
         if(!is_object($webgains_csv)){
