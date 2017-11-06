@@ -30,6 +30,63 @@ class ExoAwin {
     }
 
 
+    public function search_awin($awin_csv, $name) {
+
+        if(!is_object($awin_csv)){
+            echo 'Couldnt load csv...<br>';
+            return;
+        }
+
+        $match = array();
+        $final_match = array();
+
+        $keywords = $this->split_name_into_keywords( $name );
+
+        $stock_row = $awin_csv->get_column_id('in_stock');
+        $retailer_row = $awin_csv->get_column_id('merchant_name');
+        $deeplink_row = $awin_csv->get_column_id('aw_deep_link');
+        $price_row = $awin_csv->get_column_id('search_price');
+
+
+        $match = $awin_csv->filter_rows_by_keywords('product_name',$keywords);
+        if($match){
+            foreach($match as $matched_row) {
+
+                $stock = false;
+                if($matched_row[$stock_row] == 1){
+                    $stock = true;
+                }
+
+                // stop it from getting two matches from one retailer
+                if( ! empty($final_match)) {
+                  foreach ($final_match as $already_matched) {
+                    if( $already_matched['retailer'] == $matched_row[$retailer_row] ) {
+                      continue 2;
+                    }
+                  }
+                }
+
+                array_push($final_match, array(
+                    'retailer'      => $matched_row[$retailer_row],
+                    'deeplink'      => $matched_row[$deeplink_row],
+                    'in_stock'      => $stock,
+                    'price'         => $matched_row[$price_row],
+                    'sale-price'    => ''
+                ));
+            }
+        }
+
+        echo '<br>Found: '.sizeof($final_match).'<br>';
+        echo 'From: Awin<br><br>';
+
+        return $final_match;
+    }
+
+    public function split_name_into_keywords( $name ) {
+
+      return explode( ' ', $name );
+    }
+
     //delete old feed
     public function delete_old_feed() {
 
@@ -65,16 +122,5 @@ class ExoAwin {
 }
 
 }
-
-//$awin = new ExoAwin();
-
-//$awin->delete_old_feed();
-
-//$awin->get_new_feed();
-
-//$awin->set_feed_path();
-
-//$awin_csv = $awin->get_csv_object();
-
 
 ?>

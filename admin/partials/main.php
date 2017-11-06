@@ -108,7 +108,13 @@ $retailers_id_list = [
   'Sneakerworldshop.com'  =>  324,
   'afew-store'            =>  38,
   'sneakerstudio.de'      =>  325,
-  'Allike'                 =>  52,
+  'Allike'                =>  52,
+  'Offspring'             =>  317,
+  '5pointz'               =>  326,
+  'Footasylum'            =>  327,
+  'Hipstore'              =>  328,
+  'Office Shoes'          =>  173,
+  'Offspring'             =>  317,
 ];
 
 //get woocommerce products
@@ -184,6 +190,21 @@ foreach($exo_products as $product) {
     echo '<h3>'.$style_code.'</h3>';
 
      ob_flush(); flush();
+
+    /*
+    *
+    * AWIN SEARCHES
+    *
+    */
+    echo '<h3>Awin....</h3>';
+
+    //all awin
+    $awin_result = $awin->search_awin($awin_csv,$name);
+    if(!empty($awin_result)){
+      foreach($awin_result as $awin_single_result){
+        $result[] = array($awin_single_result);
+      }
+    }
 
 
     /*

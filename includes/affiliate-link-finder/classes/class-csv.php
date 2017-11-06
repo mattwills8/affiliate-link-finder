@@ -14,6 +14,32 @@ class CSV {
         echo 'CSV object created...<br>';
     }
 
+    public function filter_rows_by_keywords($col_name='product_id', $keywords_arr) {
+        $matches = array();
+        $col_index = $this->get_column_id($col_name);
+
+        // some blanks were coming through into array
+        $keywords_arr_filtered = array_filter($keywords_arr);
+
+        foreach($this->rows as $row_id=>$row) {
+            $keyword_matches = 0;
+            $num_keywords = sizeof($keywords_arr_filtered);
+
+            $value = $row[$col_index];
+            foreach($keywords_arr_filtered as $keyword) {
+
+              if( strpos($value, $keyword) !== false ) {
+                $keyword_matches++;
+              }
+            }
+
+            if( $keyword_matches === $num_keywords ) {
+                array_push($matches,$this->rows[$row_id]);
+            }
+        }
+        return $matches;
+    }
+
     public function filter_rows_by_col_value($col_name='product_id', $match_value) {
         $matches = array();
         $col_index = $this->get_column_id($col_name);
