@@ -1,5 +1,17 @@
 <?php
 
+function get_awin_feed() {
+
+  require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/awin/awin.php';
+
+  $awin = new ExoAwin();
+
+  $awin->delete_old_feed();
+
+  $awin->get_new_feed();
+
+}
+
 function get_webgains_feed() {
 
   require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/webgains/webgains.php';
@@ -109,6 +121,13 @@ $exo_args = array(
 $exo_products = get_posts( $exo_args );
 
 //get feeds
+
+$awin = new ExoAwin();
+
+$awin->set_feed_path();
+
+$awin_csv = $awin->get_csv_object();
+
 
 $webgains = new ExoWebgains();
 

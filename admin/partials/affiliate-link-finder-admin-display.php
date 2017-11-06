@@ -42,6 +42,15 @@ wp_unschedule_event( $timestamp, 'mw_affiliate_link_finder_cron_hook' );*/
 
 
 <form method="post" action="">
+  <input value="Get Awin Feed" type="submit" name='run_get_awin_feed' class="btn" />
+</form>
+
+<?php if(isset($_POST['run_get_awin_feed'])){
+  get_awin_feed();
+} ?>
+
+
+<form method="post" action="">
   <input value="Get Webgains Feed" type="submit" name='run_get_webgains_feed' class="btn" />
 </form>
 
