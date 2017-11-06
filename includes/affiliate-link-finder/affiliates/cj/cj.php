@@ -87,11 +87,11 @@ class ExoCJ {
         $match = $this->search_products('keywords', $keywords);
 
         if($match){
-            foreach($match['products']['product'] as $matched_row) {
-                if($matched_row['advertiser-name'] !== "Caliroots"){
+            foreach($match['products']['product'] as $product) {
+                if($product['advertiser-name'] !== "Caliroots"){
                     continue;
                 }
-                if(strpos($matched_row['buy-url'],$sku) !== false ){
+                if(strpos($product['buy-url'],$sku) !== false ){
                     array_push($final_match, array(
                         'retailer'      => 'Caliroots',
                         'deeplink'      => $product['buy-url'],
@@ -125,10 +125,10 @@ class ExoCJ {
                 //if(strpos($matched_row['buy-url'],$sku) !== false ){
                     array_push($final_match, array(
                         'retailer'      => 'SneakersnStuff',
-                        'deeplink'      => $product['buy-url'],
-                        'in_stock'      => ($product['in-stock'] === 'true'),
-                        'price'         => $product['price'].$product['currency'],
-                        'sale-price'    => $product['sale-price'].$product['currency']
+                        'deeplink'      => $matched_row['buy-url'],
+                        'in_stock'      => ($matched_row['in-stock'] === 'true'),
+                        'price'         => $matched_row['price'].$matched_row['currency'],
+                        'sale-price'    => $matched_row['sale-price'].$matched_row['currency']
                     ));
                 //}
             }
