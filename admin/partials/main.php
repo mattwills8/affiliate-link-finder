@@ -119,6 +119,7 @@ $retailers_id_list = [
   'KongOnline.co.uk'      =>  330,
   'Aphrodite'             =>  331,
   'Life Style Sports'     =>  332,
+  'Stuarts London'        =>  333,
 ];
 
 //get woocommerce products
