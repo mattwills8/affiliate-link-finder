@@ -15,17 +15,10 @@
 include_once AFFILIATE_LINK_FINDER_ROOT  . 'admin/partials/main.php';
 include_once AFFILIATE_LINK_FINDER_ROOT  . 'admin/partials/main-kickgame.php';
 
-//SETUP CRON TASK
-add_action( 'mw_affiliate_link_finder_cron_hook', 'mw_main' );
-if ( ! wp_next_scheduled( 'mw_affiliate_link_finder_cron_hook' ) ) {
-   wp_schedule_event( time(), 'twicedaily', 'mw_affiliate_link_finder_cron_hook' );
-}
-//unschedule next
-/*$timestamp = wp_next_scheduled( 'mw_affiliate_link_finder_cron_hook' );
-wp_unschedule_event( $timestamp, 'mw_affiliate_link_finder_cron_hook' );*/
+//schedule cron tasks
+include_once AFFILIATE_LINK_FINDER_ROOT  . 'admin/partials/cron.php';
 
-//see events
-//echo '<pre>'; print_r( _get_cron_array() ); echo '</pre>';
+
 ?>
 
 <h1>Afilliate Link Finder<h1>
