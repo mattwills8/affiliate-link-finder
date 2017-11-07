@@ -100,10 +100,7 @@ class ExoWebgainsDE {
 
                 if( $matched_row[$retailer_row] == 'OVERKILL' ) {
 
-                  $stock = false;
-                  if($matched_row[$stock_row] == 'ja'){
-                      $stock = true;
-                  }
+                  $stock = true;
 
                   array_push($final_match, array(
                       'retailer'      => $matched_row[$retailer_row],
