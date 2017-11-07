@@ -90,7 +90,7 @@ include_once AFFILIATE_LINK_FINDER_ROOT  . 'admin/partials/cron.php';
 
 <?php
 
-if(isset($_POST['run_affiliate_link_finder'])){
+function run_mw_main() {
 
   if(mw_main() === true) {
     $time_now = new DateTime();
@@ -99,8 +99,12 @@ if(isset($_POST['run_affiliate_link_finder'])){
     echo 'Failed... Check log';
   }
 }
+if(isset($_POST['run_affiliate_link_finder'])){
+  run_mw_main();
+}
 
-if(isset($_POST['run_affiliate_link_finder_kickgame'])){
+
+function run_mw_kickgame_main() {
 
   if(mw_kickgame_main() === true) {
     $time_now = new DateTime();
@@ -108,6 +112,9 @@ if(isset($_POST['run_affiliate_link_finder_kickgame'])){
   } else {
     echo 'Failed... Check log';
   }
+}
+if(isset($_POST['run_affiliate_link_finder_kickgame'])){
+  run_mw_kickgame_main();
 }
 
 ?>
