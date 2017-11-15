@@ -194,7 +194,13 @@ foreach($exo_products as $product) {
     echo '<h2>'.$name.'</h2>';
     echo '<h3>'.$style_code.'</h3>';
 
-     ob_flush(); flush();
+    ob_flush(); flush();
+
+    if ( ! $style_code ) {
+      echo '<h4>Style code not found in post...skipping to next product</h4><br><br>';
+      ob_flush(); flush();
+      continue;
+    }
 
     /*
     *
