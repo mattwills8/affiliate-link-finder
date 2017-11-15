@@ -93,8 +93,19 @@ class ExoWebgainsDE {
         $price_row = $webgains_csv->get_column_id('price');
         $stock_row = $webgains_csv->get_column_id('in_stock');
 
-        $match = $webgains_csv->filter_rows_by_col_value_contains('manufacturers_product_number',$style_code);
+        $style_code_split = $this->split_style_code($style_code);
 
+        $style_code_1 = $style_code_split[0];
+        $style_code_2 = $style_code_split[1];
+
+        $first_match = $webgains_csv->filter_rows_by_col_value_contains('manufacturers_product_number',$style_code_1);
+
+        if( $style_code_2 ) {
+          $match = $first_match->filter_rows_by_col_value_contains('manufacturers_product_number',$style_code_2);
+        } else {
+          $match = $first_match;
+        }
+        
         if($match){
             foreach($match as $matched_row) {
 
