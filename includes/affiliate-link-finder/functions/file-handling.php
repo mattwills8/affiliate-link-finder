@@ -30,11 +30,10 @@ function exo_extract_remote_zip($new_file_loc, $tmp_file_loc, $zip_url) {
             echo 'Couldnt extract!<br>';
         }
         $zip->close();
-        echo 'Deleting local copy....<br>';
+        echo 'Deleting local tmp version....<br>';
         unlink($tmp_file_loc);
-        return 1;
         echo 'Extracted..<br>';
-
+        return 1;
 
     } else {
         echo 'Failed to open tmp zip!<br>';

@@ -31,6 +31,14 @@ include_once AFFILIATE_LINK_FINDER_ROOT  . 'admin/partials/cron.php';
   ?>
 </p>
 
+<h3>Script last fully completed (GMT): </h3>
+<p><?php
+  if(get_option('mw_last_complete')){
+    echo gmdate("Y-m-d H:i:s", get_option('mw_last_run'));
+  }
+  ?>
+</p>
+
 <a href="<?php echo AFFILIATE_LINK_FINDER_ROOT_URL  . 'log.txt'; ?>">See log</a><br>
 
 

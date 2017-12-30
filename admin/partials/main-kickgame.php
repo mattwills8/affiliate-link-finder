@@ -20,18 +20,36 @@ require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affil
 require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/kickgame/kickgame.php';
 require_once AFFILIATE_LINK_FINDER_ROOT  . 'includes/affiliate-link-finder/affiliates/webgains/webgains.php';
 
-$retailers_id_list = [
-  'Foot Locker'   =>  158,
-  'Footshop.eu'   =>  314,
-  'Caliroots'   =>  50,
-  'SneakersnStuff'   =>  42,
-  'End Clothing'   =>  49,
-  'Kickgame'   =>  315,
-  'slam jam socialism'   =>  41,
-  'Sneaker Baas UK'   =>  316,
-  'NIKE UK'   =>  53,
-
+$known_retailers = [
+  'Foot Locker'           =>  158,
+  'Footshop.eu'           =>  314,
+  'Caliroots'             =>  50,
+  'SneakersnStuff'        =>  42,
+  'End Clothing'          =>  49,
+  'Kickgame'              =>  315,
+  'slam jam socialism'    =>  41,
+  'Sneaker Baas UK'       =>  316,
+  'NIKE UK'               =>  53,
+  'Bstnstore.com'         =>  322,
+  'OVERKILL'              =>  323,
+  'Sneakerworldshop.com'  =>  324,
+  'afew-store'            =>  38,
+  'sneakerstudio.de'      =>  325,
+  'Allike'                =>  52,
+  'Offspring'             =>  317,
+  '5pointz'               =>  326,
+  'Footasylum'            =>  327,
+  'Hipstore'              =>  328,
+  'Office Shoes'          =>  173,
+  'Offspring'             =>  317,
+  '18montrose'            =>  329,
+  'KongOnline.co.uk'      =>  330,
+  'Aphrodite'             =>  331,
+  'Life Style Sports'     =>  332,
+  'Stuarts London'        =>  333,
 ];
+
+$retailers_id_list = array_merge($known_retailers, get_all_retailer_terms());
 
 //get woocommerce products
 $exo_args = array(
@@ -94,83 +112,70 @@ foreach($exo_products as $product) {
 
     if(sizeOf($result) != 0){
 
-      $retailer_string = '';
-      $retailer_ids = '';
-      $retailer_links = '';
-      $retailer_stock = '';
-      $retailer_release_dates = '';
-      $retailer_prices = '';
-      $retailer_sale_prices = '';
-      $i = 0;
+      echo '<strong>'.sizeof($result).'</strong>';
+      echo ' Retailers Matched<br><br>';
+
+      // retailer found in the past
+      $past_retailers_arr = array();
+      $all_retailers_arr = array();
+
+      $past_retailers = get_post_meta($product_id,'mw_all_retailers');
+      if($past_retailers){
+        $all_retailers_arr = explode("/",$past_retailers[0]);
+      }
 
       foreach($result as $single_result_wrapper_arr) {
         $single_result = $single_result_wrapper_arr[0];
-        $found_retailers[] = $single_result['retailer'];
+        $all_retailers_arr = append_retailer_id_to_array_if_id_found($single_result['retailer'], $all_retailers_arr, $retailers_id_list);
       }
+      $all_retailers = implode("/", $all_retailers_arr);
 
-      if($past_retailers) {
-        foreach ($past_retailers_arr as $past_retailer) {
-          if((!in_array($past_retailer,$found_retailers)) && $past_retailer != ''){
-            echo 'past retailer: '.$past_retailer.' was not in results array<br>';
-            array_push($result, array(array(
-              'retailer'      => $past_retailer,
-              'deeplink'      => '',
-              'in_stock'      => false,
-              'price'         => '',
-              'sale-price'    => ''
-            )));
+      update_post_meta($product_id,'mw_all_retailers',$all_retailers);
+
+      // result object shape to store in post meta
+      $current_retailers_meta = get_post_meta($product_id,'product_retailer')[0];
+      if( ! $current_retailers_meta) {
+        $current_retailers_meta = '';
+      }
+      $current_retailers = unserialize($current_retailers_meta);
+
+      // release date entered manually
+      $release_date_dt = new DateTime(get_post_meta($product_id,'product_release_date')[0]);
+      $release_date_unix = $release_date_dt != '' ? $release_date_dt->getTimestamp() : '';
+
+      foreach($result as $single_result_wrapper_arr) {
+        $single_result = $single_result_wrapper_arr[0];
+
+        if( array_key_exists( $single_result['retailer'], $retailers_id_list ) ){
+          $retailer_id = (string)$retailers_id_list[$single_result['retailer']];
+
+          // if not in retailer string then add it
+          if( ! in_array( $retailer_id, $current_retailers['retailer_id']) ) {
+            $current_retailers['retailer_id'][] = $retailer_id;
+            $current_retailers['retailer_link'][] = $single_result['deeplink'];
+            $current_retailers['stock_status'][] = (string)(int)$single_result['in_stock'];
+            $current_retailers['retailer_release_date'][] = $release_date_unix;
           }
+
+          // if in retailer string then find index and update
+          $retailer_index = array_search($retailer_id, $current_retailers['retailer_id']);
+          if( $retailer_index !== false ) {
+            $current_retailers['retailer_id'][$retailer_index] = $retailer_id;
+            $current_retailers['retailer_link'][$retailer_index] = $single_result['deeplink'];
+            $current_retailers['stock_status'][$retailer_index] = (string)(int)$single_result['in_stock'];
+            $current_retailers['retailer_release_date'][$retailer_index] = $release_date_unix;
+          }
+        } else {
+          echo "<br>Couldnt find ID for retailer with name ".$single_result['retailer'].". Make sure name matches retailer name in retailers list exactly.<br>";
         }
       }
 
-      var_dump($result);
-      echo '<br><br>';
-      //creating string to input into retailer field
-      foreach($result as $single_result_wrapper_arr) {
-        $single_result = $single_result_wrapper_arr[0];
-
-        //format data for inputting into retailer field
-        $retailer_id = $retailers_id_list[$single_result['retailer']];
-        $retailer_id_len = strlen((string)$retailer_id);
-        $all_retailers_arr[] = $single_result['retailer'];
-
-        $retailer_link = $single_result['deeplink'];
-        $retailer_link_len = strlen($retailer_link);
-
-        $retailer_stock_status = (string)(int)$single_result['in_stock'];
-
-        $retailer_release_date = $release_date_unix;
-
-        $retailer_ids .= 'i:'.(string)$i.';s:'.$retailer_id_len.':"'.$retailer_id.'";';
-        $retailer_links .= 'i:'.(string)$i.';s:'.$retailer_link_len.':"'.$retailer_link.'";';
-        $retailer_stock .= 'i:'.(string)$i.';s:1:"'.$retailer_stock_status.'";';
-        $retailer_release_dates .= 'i:'.(string)$i.';i:'.$retailer_release_date.';';
-
-        if($single_result['price'] != ''){
-          $retailer_prices .= $single_result['price'].'/';
-        }
-
-        if($single_result['sale-price'] != ''){
-          $retailer_sale_prices .= $single_result['sale-price'].'/';
-        }
-
-
-        $i++;
-      }
-      $retailer_string .= 'a:4:{s:11:"retailer_id";a:'.(string)$i.':{'.$retailer_ids.'}';
-      $retailer_string .= 's:13:"retailer_link";a:'.(string)$i.':{'.$retailer_links.'}';
-      $retailer_string .= 's:12:"stock_status";a:'.(string)$i.':{'.$retailer_stock.'}';
-      $retailer_string .= 's:21:"retailer_release_date";a:'.(string)$i.':{'.$retailer_release_dates.'}}';
-
-      echo '<br>retailer string: '.$retailer_string.'<br>';
+      $retailer_string = serialize($current_retailers);
 
       update_post_meta($product_id,'product_retailer',$retailer_string);
-      update_post_meta($product_id,'mw_all_retailers',$all_retailers);
     }
 }
 
-$main_time_now = new DateTime();
-update_option('mw_last_run', $main_time_now->getTimestamp());
 echo "##################END PROCESS################## /n";
 echo "##################".gmdate("Y-m-d H:i:s", $main_time_now->getTimestamp())."################## /n";
 
