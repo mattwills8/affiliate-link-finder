@@ -60,14 +60,11 @@ $exo_args = array(
 
 $exo_products = get_posts( $exo_args );
 
-//get feeds
-
-$kickgame = new ExoKickgame();
-
-$kickgame->get_downloaded_feed();
-
-
 foreach($exo_products as $product) {
+
+    //get feeds
+    $kickgame = new ExoKickgame();
+    $kickgame->get_downloaded_feed();
 
     $result = array();
     $past_retailers = array();

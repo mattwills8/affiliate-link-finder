@@ -37,42 +37,47 @@ class ExoKickgame {
 
         $match = array();
 
+        $checked = 0;
+
         // move to the first <entry /> node
         while ($this->feed_xml->read() && $this->feed_xml->name !== 'entry');
 
         // now that we're at the right depth, hop to the next <entry /> until the end of the tree
         while ($this->feed_xml->name === 'entry')
         {
-            // either one should work
             $node = new SimpleXMLElement($this->feed_xml->readOuterXML());
+            if ($node === NULL) {
+              continue;
+            }
             $this->ns = $node->getNamespaces(true);
 
             foreach($node->children($this->ns['g']) as $product_info){
+
                 if($product_info->getName() === 'description') {
 
                     if(strpos($product_info->asXml(),$sku) !== false) {
 
-                        echo dom_import_simplexml($product_info)->nodeValue;
+                        // echo dom_import_simplexml($product_info)->nodeValue;
 
-                        $stock = false;
-                        foreach($product->children($this->ns['g']) as $product_info_stock){
+                        $stock = true; // can assume that if we found one then it's in stock - seems to be how the feed is set up
+                        /*foreach($node->children($this->ns['g']) as $product_info_stock){
                             if($product_info_stock->getName() === 'availability') {
 
                                 if(strpos($product_info_stock->asXml(),"In Stock") !== false) {
                                     $stock = true;
                                 }
                             }
-                        }
+                        }*/
 
                         $link = '';
-                        foreach($product->children($this->ns['g']) as $product_info_2){
+                        foreach($node->children($this->ns['g']) as $product_info_2){
                             if($product_info_2->getName() === 'link') {
-                                $link = $product_info_2->asXml();
+                                $link = str_replace("</g:link>","",str_replace("<g:link>","",$product_info_2->asXml()));
                             }
                         }
 
                         $price = '';
-                        foreach($product->children($this->ns['g']) as $product_info_3){
+                        foreach($node->children($this->ns['g']) as $product_info_3){
                             if($product_info_3->getName() === 'price') {
                                 $price = substr($product_info_3->asXml(),7,-8);
                             }
@@ -91,11 +96,13 @@ class ExoKickgame {
 
             //TODO: UNCOMMENT THIS. WE NEED TO JUST LOOP THROUGH THE XML ONCE, NOT FOR EVERY PRODUCT, MAYBE USING AN ARRAY OF SKU
             // go to next <entry />
-            //$this->feed_xml->next('entry');
+            $checked = $checked + 1;
+            $this->feed_xml->next('entry');
         }
 
         echo '<br>Found: '.sizeof($match).'<br>';
-        echo 'From: Footshop.eu<br><br>';
+        echo 'From: Footshop.eu<br>';
+        echo '<br>Checked: '.$checked.' Entries<br><br>';
 
         return $match;
     }
